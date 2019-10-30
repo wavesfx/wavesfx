@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox layoutX="42.0" layoutY="14.0" prefWidth="400.0" styleClass="fr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                  <Label styleClass="walletView-label" text="%token_generation">
+                      <opaqueInsets>
+                          <Insets />
+                      </opaqueInsets>
+                      <padding>
+                          <Insets bottom="10.0" />
+                      </padding>
+                  </Label>
+                  <Label styleClass="form" text="%asset_name" />
+                  <TextField fx:id="assetNameTextField" prefHeight="27.0" prefWidth="265.0" promptText="%only_latin" />
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                        <Label styleClass="form" text="%description" />
+                        <Label fx:id="nameLimitLabel" alignment="CENTER_RIGHT" graphicTextGap="0.0" prefHeight="17.0" prefWidth="57.0" textFill="#7995b9" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+                  <TextArea fx:id="descriptionTextField" prefHeight="120.0" promptText="%cannot_change_desc_later" wrapText="true" />
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                        <Label styleClass="form" text="%total_tokens" />
+                        <Label fx:id="descriptionLimitLabel" alignment="CENTER_RIGHT" graphicTextGap="0.0" prefHeight="17.0" prefWidth="57.0" textFill="#7995b9" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                        <TextField fx:id="amountTextField">
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                        <ComboBox fx:id="reissuableComboBox" prefHeight="30.0" prefWidth="185.0" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin>
+                  </ComboBox>
+               </children>
+            </GridPane>
+                  <Label styleClass="form" text="%decimals" />
+                  <Slider fx:id="decimalSlider" majorTickUnit="1.0" max="8.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" />
+                  <Label styleClass="form" text="%set_script" />
+                  <TextArea fx:id="scriptTextField" prefHeight="120.0" promptText="%set_script_promt" wrapText="true" />
+                  <Label styleClass="form" text="%fee" />
+                  <TextField fx:id="feeTextField" editable="false" maxWidth="200.0" />
+                  <Button fx:id="generateButton" disable="true" mnemonicParsing="false" text="%generate">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            </children>
+            <padding>
+                <Insets left="20.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>

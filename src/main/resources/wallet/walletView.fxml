@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="rootpane" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0" minWidth="0" prefHeight="586.0" prefWidth="1020.0" scaleShape="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="272.0" prefHeight="700.0" prefWidth="272.0" styleClass="side-menu" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox alignment="BOTTOM_CENTER" layoutX="2.0" layoutY="2.0" prefHeight="85.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                            <children>
+                                <ImageView pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../img/wavesfx_logo_wv.png" />
+                                    </image>
+                                </ImageView>
+                                <VBox alignment="CENTER_LEFT">
+                                    <VBox.margin>
+                                        <Insets left="160.0" />
+                                    </VBox.margin>
+                                    <children>
+                                        <Label fx:id="networkLabel" text="Network" textFill="#0055ff">
+                                            <graphic>
+                                                <FontIcon iconColor="#0055ff" iconLiteral="mdi-access-point" iconSize="14" />
+                                            </graphic>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                        <VBox fx:id="topMenuVBox" layoutX="3.0" layoutY="114.0" maxWidth="1.7976931348623157E308" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <children>
+                                <Button fx:id="dashboardButton" graphicTextGap="0.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%dashboard">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-desktop-mac" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="portfolioButton" graphicTextGap="0.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%portfolio">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-wallet" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="transactionsButton" graphicTextGap="0.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%transactions">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-swap-vertical" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="sendButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%send">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-cash" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="leasingButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%leasing">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-bank" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="tokenIssueButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%tokens">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-layers" />
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </VBox>
+                        <VBox fx:id="bottomMenuVBox" layoutX="1.0" layoutY="557.0" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <children>
+                                <Button fx:id="settingsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="149.0" styleClass="menu-button" text="%settings">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-settings" />
+                                    </graphic>
+                                </Button>
+                                <Button fx:id="logoutButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%logout">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-logout" />
+                                    </graphic>
+                                </Button>
+                        <HBox styleClass="menu-label">
+                           <children>
+                              <Label text="%version" />
+                              <Label fx:id="versionLabel" />
+                           </children>
+                        </HBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="25.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </left>
+            <center>
+                <BorderPane fx:id="contentPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin></BorderPane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

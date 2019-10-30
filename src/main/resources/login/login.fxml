@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="rootpane" stylesheets="@../mainView/mainView.css" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="198.0" styleClass="login-window" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+              <VBox alignment="TOP_RIGHT">
+                  <children>
+                  <ComboBox fx:id="languageComboBox" />
+                  </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="40.0" right="40.0" />
+               </padding>
+              </VBox>
+                <AnchorPane maxWidth="1100.0" prefWidth="1100.0">
+                    <children>
+                        <VBox layoutX="413.0" prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-logo" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <ImageView fitWidth="226.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../img/wavesfx_logo.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </VBox>
+                        <Label alignment="CENTER" layoutX="413.0" layoutY="80.0" prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-label" text="%sign_in" textAlignment="CENTER" />
+                        <AnchorPane layoutX="413.0" layoutY="157.0" prefWidth="274.0">
+                            <children>
+                                <ComboBox fx:id="profileComboBox" layoutY="22.0" styleClass="big" AnchorPane.leftAnchor="0.0" />
+                                <Label styleClass="input-label" text="%account_name" />
+                                <Button fx:id="deleteButton" alignment="BOTTOM_RIGHT" layoutX="137.0" layoutY="93.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="137.0" styleClass="text-button" text="%delete_account" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="413.0" layoutY="267.0">
+                            <children>
+                                <Label styleClass="input-label" text="%password" />
+                                <PasswordField fx:id="passwordField" layoutY="22.0" prefHeight="40.0" prefWidth="274.0" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="413.0" layoutY="358.0" prefWidth="274.0">
+                            <children>
+                                <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="274.0" styleClass="login-button" text="%login" />
+                                <Button fx:id="newAccountButton" alignment="BASELINE_LEFT" layoutY="61.0" mnemonicParsing="false" onAction="#newAccount" styleClass="text-button" text="%new_account" />
+                                <Button fx:id="importAccountButton" alignment="BASELINE_RIGHT" layoutX="137.0" layoutY="61.0" mnemonicParsing="false" onAction="#importAccount" prefHeight="17.0" prefWidth="137.0" styleClass="text-button" text="%import_account" />
+                            </children>
+                        </AnchorPane>
+                  <VBox alignment="CENTER_RIGHT" layoutX="413.0" layoutY="329.0" prefHeight="19.0" prefWidth="274.0">
+                     <children>
+                        <Label fx:id="invalidPassphraseLabel" styleClass="form-input-alert" text="%invalid_passphrase" visible="false" />
+                     </children>
+                  </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

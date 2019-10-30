@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<AnchorPane fx:id="rootPane" styleClass="dialog" stylesheets="@../mainView/mainView.css"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <children>
+                <Label styleClass="head-label" text="%asset_info"/>
+                <GridPane focusTraversable="true" minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField fx:id="issuerTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0"
+                                   prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1"/>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%issuer">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                    </children>
+                </GridPane>
+                <GridPane minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%id">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="idTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0"
+                                   prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <GridPane minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%name">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="nameTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0"
+                                   prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <GridPane minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%total_amount">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="totalAmountTextField" alignment="CENTER_RIGHT" editable="false"
+                                   prefHeight="17.0" prefWidth="248.0" styleClass="transparent-text-field"
+                                   GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <GridPane minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%decimals">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="decimalsTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0"
+                                   prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <GridPane minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%dialogType">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="typeTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0"
+                                   prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <GridPane minHeight="40.0" prefHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%issue_date">
+                            <styleClass>
+                                <String fx:value="transparent-text-field"/>
+                                <String fx:value="property"/>
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="issueDateTextField" alignment="CENTER_RIGHT" editable="false"
+                                   prefHeight="17.0" prefWidth="248.0" styleClass="transparent-text-field"
+                                   GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+                <TextArea fx:id="descriptionTextField" editable="false" scrollLeft="NaN" scrollTop="NaN"
+                          styleClass="transparent-text-area" wrapText="true"/>
+                <VBox alignment="CENTER" prefWidth="450.0">
+                    <children>
+                        <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeDialog"
+                                styleClass="dialog-button" text="%close"/>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

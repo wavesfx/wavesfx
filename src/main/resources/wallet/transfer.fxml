@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <tabs>
+                <Tab fx:id="sendTab" closable="false" text="%send">
+                    <fx:include fx:id="sendTabPage" source="send.fxml" />
+                </Tab>
+                <Tab fx:id="massTransferTab" closable="false" text="%mass_transfer">
+                    <fx:include fx:id="massTransferPage" source="massTransfer.fxml" />
+                </Tab>
+                <Tab fx:id="setScriptTab" closable="false" text="%set_script">
+                    <fx:include fx:id="setScript" source="setScript.fxml" />
+                </Tab>
+                <Tab fx:id="moveAssetsTab" closable="false" text="%move_assets">
+                    <fx:include fx:id="moveAssets" source="setScript.fxml" />
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

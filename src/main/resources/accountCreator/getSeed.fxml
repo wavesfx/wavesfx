@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" styleClass="rootpane" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="283.0" layoutY="279.0" styleClass="account-creator" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <AnchorPane maxWidth="1100.0" prefHeight="432.0" prefWidth="1100.0">
+                    <children>
+                        <Label alignment="CENTER" layoutX="425.0" layoutY="77.0" prefHeight="51.0" prefWidth="250.0" styleClass="account-creator-label" text="%seed_generation" AnchorPane.topAnchor="77.0">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="363.0" layoutY="154.0" prefHeight="42.0" prefWidth="355.0" styleClass="input-label" text="%your_seed" wrapText="true" />
+                        <AnchorPane layoutX="362.0" layoutY="196.0">
+                            <children>
+                                <TextArea fx:id="seedTextArea" editable="false" prefHeight="175.0" prefWidth="376.0" styleClass="seed" wrapText="true" />
+                                <Label layoutY="189.0" styleClass="warning" text="%warning" />
+                                <Label layoutY="209.0" prefWidth="376.0" styleClass="input-label" text="%seed_disclaimer" wrapText="true" />
+                            </children>
+                        </AnchorPane>
+                        <VBox layoutX="413.0" prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-logo">
+                            <children>
+                                <ImageView fitHeight="52.0" fitWidth="226.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../img/wavesfx_logo.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+        <GridPane layoutX="10.0" layoutY="10.0" styleClass="account-creator-footer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" styleClass="account-creator-button" text="%back" />
+                <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" styleClass="account-creator-button" text="%next" GridPane.columnIndex="2" />
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

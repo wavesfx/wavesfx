@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<AnchorPane fx:id="rootPane" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TableView fx:id="assetsTableView" layoutX="44.0" layoutY="28.0" prefHeight="273.0" prefWidth="480.0"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="28.0">
+            <placeholder>
+                <Label text=""/>
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="assetNameTableColumn" editable="false" prefWidth="52.0" text="%asset">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="name"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="assetIdTableColumn" editable="false" minWidth="0.0" prefWidth="245.0"
+                             text="%asset_id">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="assetId"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="assetBalanceTableColumn" editable="false" minWidth="0.0" prefWidth="245.0"
+                             text="%balance">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="balance"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <TextField fx:id="filterTextField" layoutX="14.0" layoutY="1.0" prefHeight="27.0" prefWidth="157.0"
+                   promptText="%filter" styleClass="filterbox"/>
+        <FontIcon iconLiteral="mdi-magnify" iconSize="18" layoutX="19.0" layoutY="22.0" styleClass="filter-icon"
+                  wrappingWidth="10.0"/>
+    </children>
+</AnchorPane>

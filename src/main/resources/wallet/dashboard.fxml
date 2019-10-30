@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <GridPane maxWidth="760.0">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="400.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <VBox alignment="TOP_CENTER" prefWidth="300.0">
+               <children>
+                  <HBox alignment="TOP_CENTER">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label styleClass="walletView-label" text="%balance" />
+                     </children>
+                  </HBox>
+                  <GridPane styleClass="dashboard-section" vgap="10.0">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="%regular" />
+                        <Label fx:id="regularBalanceLabel" alignment="TOP_RIGHT" contentDisplay="RIGHT" text="0" wrapText="true" GridPane.columnIndex="1" />
+                        <Label text="%available" GridPane.rowIndex="1" />
+                        <Label fx:id="availableBalanceLabel" alignment="TOP_RIGHT" contentDisplay="RIGHT" text="0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                  </GridPane>
+                  <HBox alignment="TOP_CENTER">
+                     <children>
+                        <Label styleClass="walletView-label" text="%aliases" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="20.0" />
+                     </padding>
+                  </HBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <ListView fx:id="aliasListView" maxHeight="200.0" />
+                     </children>
+                  </VBox>
+                  <GridPane alignment="CENTER_LEFT" hgap="10.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="0.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox>
+                           <children>
+                              <TextField fx:id="aliasTextField" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="createAliasButton" disable="true" mnemonicParsing="false" prefHeight="29.0" text="%create_alias" GridPane.columnIndex="1" />
+                        <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
+                           <children>
+                              <Label text="%fee" textFill="#7995b9">
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="feeLabel" text="0" textFill="#7995b9" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="TOP_CENTER" fillWidth="false" GridPane.columnIndex="1">
+               <children>
+                  <VBox prefWidth="280.0">
+                     <children>
+                        <HBox alignment="TOP_CENTER">
+                           <children>
+                              <Label styleClass="walletView-label" text="%node" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <GridPane styleClass="dashboard-section" vgap="10.0">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label text="%version" />
+                              <Label fx:id="versionLabel" alignment="TOP_RIGHT" contentDisplay="RIGHT" text="0.0.0" wrapText="true" GridPane.columnIndex="1" />
+                              <Label text="%height" GridPane.rowIndex="1" />
+                              <Label fx:id="heightLabel" alignment="TOP_RIGHT" contentDisplay="RIGHT" text="0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </GridPane>
+                        <VBox fx:id="blockHeaderVbox">
+                           <padding>
+                              <Insets top="20.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets right="20.0" />
+   </padding>
+</GridPane>

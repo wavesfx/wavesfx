@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="42.0" layoutY="14.0" prefWidth="400.0" styleClass="fr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label styleClass="form" text="%recipient" />
+            <TextField fx:id="recipientTextField" />
+            <Label styleClass="form" text="%assets" />
+            <ListView fx:id="assetListView" prefHeight="300.0" />
+            <GridPane>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="0.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label styleClass="form" text="%estimated_fee" />
+                  <HBox alignment="TOP_RIGHT" GridPane.columnIndex="1">
+                     <children>
+                        <Button fx:id="selectAllButton" mnemonicParsing="false" styleClass="icon-button" text="%select_all" />
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <VBox fillWidth="false" prefWidth="300.0">
+               <children>
+                  <TextField fx:id="feeTextField" editable="false" prefWidth="300.0" />
+                  <HBox>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Button fx:id="sendButton" disable="true" mnemonicParsing="false" text="%send">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="20.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</AnchorPane>

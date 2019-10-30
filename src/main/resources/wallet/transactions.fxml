@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="rootPane" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TableView fx:id="transactionsTableView" layoutY="27.0" prefHeight="262.0" prefWidth="480.0"
+                   AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="27.0">
+            <placeholder>
+                <Label text=""/>
+            </placeholder>
+            <columns>
+                <TableColumn fx:id="transactionTypeTableColumn" editable="false" prefWidth="390.0"
+                             text="%transaction_info">
+                    <cellValueFactory>
+                    <PropertyValueFactory property="transactionSummary"/>
+                </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="transactionDateTableColumn" prefWidth="50.0" text="%date">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="dateTime"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <ComboBox fx:id="txFilterComboBox" layoutX="14.0" layoutY="1.0" prefWidth="150.0"/>
+        <ComboBox fx:id="txAmountComboBox" layoutX="178.0" layoutY="1.0" prefHeight="27.0" prefWidth="89.0"/>
+    </children>
+</AnchorPane>
