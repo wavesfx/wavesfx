@@ -11,7 +11,7 @@ public class CustomFXMLLoader {
 
     public static Parent loadParent(FXMLView fxmlView, MasterController fxmlController, ResourceBundle resourceBundle) {
         final var loaderClass = MethodHandles.lookup().lookupClass();
-        final var fxmlLoader = new FXMLLoader(loaderClass.getResource(fxmlView.toString()), resourceBundle);;
+        final var fxmlLoader = new FXMLLoader(loaderClass.getResource(fxmlView.toString()), resourceBundle);
         fxmlLoader.setController(fxmlController);
         try {
             return fxmlLoader.load();
