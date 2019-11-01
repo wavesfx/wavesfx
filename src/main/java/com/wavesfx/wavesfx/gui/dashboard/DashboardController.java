@@ -165,7 +165,7 @@ public class DashboardController extends MasterController {
         Collections.reverse(blockHeaders);
         blockHeaderVbox.getChildren().clear();
         final AtomicInteger counter = new AtomicInteger();
-        final Function<AtomicInteger, Integer> blockCount = aInt -> aInt.intValue() < 2 ? aInt.incrementAndGet() : 0;
+        final Function<AtomicInteger, Integer> blockCount = aInt -> aInt.intValue() < 2 ? aInt.getAndIncrement() : aInt.getAndSet(0);
 
         return blockHeaders.stream()
                 .map(blockHeader -> new BlockInfoBox(blockHeader, getMessages(), blockCount.apply(counter)))
