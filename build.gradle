@@ -46,7 +46,7 @@ dependencies {
 }
 
 //applicationDefaultJvmArgs = ['--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls']
-applicationDefaultJvmArgs = ['-splash:./src/main/resources/img/wavesfx_splash.png']
+applicationDefaultJvmArgs = ['-splash:./package/wavesfx_splash.png']
 
 task createProperties(dependsOn: processResources) {
     doLast {
@@ -83,9 +83,9 @@ jlink {
         imageName = "WavesFX"
         installerName = 'WavesFX'
         if (os.windows) {
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:runtime/bin/wavesfx_splash.png"]
             imageOptions = ['--icon', './package/wavesfx_icon.ico']
             jpackageHome = getJpackagePath("C:/Program Files/Java/jpackage")
+            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/bin/wavesfx_splash.png']
             installerType = "msi"
             installerOptions = ['--app-version', version,
                                 '--win-upgrade-uuid', 'd4a56a68-bdc2-4138-8572-84fc72c11fbc',
@@ -93,14 +93,14 @@ jlink {
                                 '--win-shortcut'
             ]
         } else if(os.macOsX) {
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:runtime/bin/wavesfx_splash.png"]
             imageOptions = ['--app-version', version,
                             '--icon', './package/wavesfx_mac_icon.icns',]
             jpackageHome = getJpackagePath('/usr/local/lib/jpackage')
+            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/Contents/Home/bin/wavesfx_splash.png']
             installerType = 'dmg'
         } else if (os.unix) {
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:../lib/runtime/bin/wavesfx_splash.png"]
             imageOptions = ['--icon', './package/wavesfx_linux_icon.png']
+            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/lib/runtime/bin/wavesfx_splash.png']
             jpackageHome = getJpackagePath('/usr/lib/jvm/jpackage')
             installerType = "deb"
         }
@@ -111,7 +111,7 @@ def JLINK_DIR = "$buildDir"
 tasks.jlink.doLast {
     copy {
         includeEmptyDirs = false
-        from("src/main/resources/img") {
+        from("package") {
             include "wavesfx_splash.png"
         }
         into JLINK_DIR + "/image/bin"
