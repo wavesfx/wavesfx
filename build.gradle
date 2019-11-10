@@ -9,8 +9,8 @@ plugins {
 group 'com.wavesfx'
 version '0.9.1'
 
-sourceCompatibility = 12
-targetCompatibility = 12
+sourceCompatibility = 13
+targetCompatibility = 13
 
 repositories {
     mavenCentral()
