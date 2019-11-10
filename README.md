@@ -24,6 +24,7 @@ cd wavesfx
 ## 3. Compilation and packaging
 ### Build binary package
 ```
+chmod +x gradlew
 ./gradlew "-Ddownload.jpackage=true" jpackageImage 
 ```
 Leave out `"-Ddownload.jpackage=true"` if [jpackage](https://jdk.java.net/jpackage/) is already installed on the system (set jpackage path in `build.gradle`). 
