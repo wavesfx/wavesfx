@@ -7,7 +7,7 @@
    <children>
       <VBox layoutX="42.0" layoutY="14.0" prefWidth="400.0" styleClass="fr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label styleClass="form" text="%recipient" />
+            <Label fx:id="recipientLabel" styleClass="form" text="%recipient" />
             <TextField fx:id="recipientTextField" />
             <Label styleClass="form" text="%assets" />
             <ListView fx:id="assetListView" prefHeight="300.0" />
