@@ -124,6 +124,7 @@ public class MoveAssetsController extends MasterController {
         rxBus.getTransactions().onNext(fetchFinalTransactionList(transactionsSubject.getValue()));
         final var parent = loadParent(FXMLView.CONFIRM_MOVE_ASSETS, new ConfirmMoveAssetsController(rxBus));
         createDialog(parent);
+        assetListView.getSelectionModel().clearSelection();
     }
 
     private void disableSendButton() {
