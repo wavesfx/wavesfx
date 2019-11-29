@@ -18,6 +18,9 @@
                 <Tab fx:id="moveAssetsTab" closable="false" text="%move_assets">
                     <fx:include fx:id="moveAssets" source="setScript.fxml" />
                 </Tab>
+                <Tab fx:id="burnAssetsTab" closable="false" text="%burn_assets">
+                    <fx:include fx:id="burnAssets" source="burnAssets.fxml" />
+                </Tab>
             </tabs>
         </TabPane>
     </children>

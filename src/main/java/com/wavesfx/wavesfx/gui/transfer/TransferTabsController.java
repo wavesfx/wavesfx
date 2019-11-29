@@ -9,6 +9,7 @@ import javafx.scene.control.TabPane;
 
 public class TransferTabsController extends MasterController {
 
+    private final BurnAssetsController burnAssetsController;
     private final MassTransferController massTransferController;
     private final MoveAssetsController moveAssetsController;
     private final SendController sendController;
@@ -18,6 +19,7 @@ public class TransferTabsController extends MasterController {
     @FXML private Tab massTransferTab;
     @FXML private Tab setScriptTab;
     @FXML private Tab moveAssetsTab;
+    @FXML private Tab burnAssetsTab;
     @FXML private TabPane tabPane;
 
     public TransferTabsController(final RxBus rxBus) {
@@ -26,6 +28,7 @@ public class TransferTabsController extends MasterController {
         massTransferController = new MassTransferController(rxBus);
         setScriptController = new SetScriptController(rxBus);
         moveAssetsController = new MoveAssetsController(rxBus);
+        burnAssetsController = new BurnAssetsController(rxBus);
     }
 
     @FXML
@@ -34,5 +37,6 @@ public class TransferTabsController extends MasterController {
         massTransferTab.setContent(loadParent(FXMLView.MASS_TRANSFER, massTransferController));
         setScriptTab.setContent(loadParent(FXMLView.SET_SCRIPT, setScriptController));
         moveAssetsTab.setContent(loadParent(FXMLView.MOVE_ASSETS, moveAssetsController));
+        burnAssetsTab.setContent(loadParent(FXMLView.BURN_ASSETS, burnAssetsController));
     }
 }

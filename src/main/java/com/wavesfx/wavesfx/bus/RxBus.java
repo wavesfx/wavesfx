@@ -5,6 +5,7 @@ import com.wavesfx.wavesfx.gui.FXMLView;
 import com.wavesfx.wavesfx.gui.accountCreator.AccountCreator;
 import com.wavesfx.wavesfx.logic.*;
 import com.wavesplatform.wavesj.*;
+import com.wavesplatform.wavesj.transactions.BurnTransaction;
 import com.wavesplatform.wavesj.transactions.TransferTransaction;
 import io.reactivex.subjects.BehaviorSubject;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,7 @@ public class RxBus {
     private final BehaviorSubject<List<TransactionDetails>> transactionDetailsListBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<List<Transferable>> assetListBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<List<TransferTransaction>> transactionsBehaviorSubject = createBehaviorSubject();
+    private final BehaviorSubject<List<BurnTransaction>> burnTransactionsBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<Long> emitterBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<Node> nodeBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<NodeService> nodeService2BehaviorSubject = createBehaviorSubject();
@@ -103,6 +105,10 @@ public class RxBus {
 
     public BehaviorSubject<List<TransferTransaction>> getTransactions() {
         return transactionsBehaviorSubject;
+    }
+
+    public BehaviorSubject<List<BurnTransaction>> getBurnTransactions() {
+        return burnTransactionsBehaviorSubject;
     }
 
     public BehaviorSubject<HashMap<String, AssetDetails>> getAssetDetailsHashMap() {
