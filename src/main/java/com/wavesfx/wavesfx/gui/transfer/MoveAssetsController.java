@@ -41,6 +41,7 @@ public class MoveAssetsController extends MasterController {
     @FXML private AnchorPane rootPane;
     @FXML private Button sendButton;
     @FXML private Button selectAllButton;
+    @FXML private Button unselectAllButton;
     @FXML private ListView<Transferable> assetListView;
     @FXML private TextField recipientTextField;
     @FXML private TextField feeTextField;
@@ -63,14 +64,15 @@ public class MoveAssetsController extends MasterController {
                 .map(address -> NodeAddressValidator.isValidAddress(address, nodeSubject.getValue()))
                 .retry();
 
+        final var unselectAllActionEventsObservable = JavaFxObservable.actionEventsOf(unselectAllButton);
         final var selectAllActionEventsObservable = JavaFxObservable.actionEventsOf(selectAllButton);
-
-        selectAllActionEventsObservable
-                .subscribe(ae -> assetListView.getSelectionModel().selectAll());
+        selectAllActionEventsObservable.subscribe(ae -> assetListView.getSelectionModel().selectAll());
+        unselectAllActionEventsObservable.subscribe(ae -> assetListView.getSelectionModel().clearSelection());
+        final var selectionEventObservable = Observable.merge(selectAllActionEventsObservable, unselectAllActionEventsObservable);
 
         final var assetListViewEventsObservable = Observable.merge(
                 privateKeyAccountSubject,
-                selectAllActionEventsObservable,
+                selectionEventObservable,
                 JavaFxObservable.eventsOf(assetListView, MouseEvent.MOUSE_CLICKED),
                 JavaFxObservable.eventsOf(assetListView, KeyEvent.ANY));
 
