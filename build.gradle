@@ -82,19 +82,23 @@ jlink {
         skipInstaller = false
         imageName = "WavesFX"
         installerName = 'WavesFX'
+        appVersion = version
+        installerOptions = [
+                '--vendor', 'WavesFX',
+                '--license-file', 'LICENSE'
+        ]
         if (os.windows) {
             imageOptions = ['--icon', './package/wavesfx_icon.ico']
             jpackageHome = getJpackagePath("C:/Program Files/Java/jpackage")
             jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/bin/wavesfx_splash.png']
             installerType = "msi"
-            installerOptions = ['--app-version', version,
-                                '--win-upgrade-uuid', 'd4a56a68-bdc2-4138-8572-84fc72c11fbc',
+            installerOptions += ['--win-upgrade-uuid', 'd4a56a68-bdc2-4138-8572-84fc72c11fbc',
+                                '--win-dir-chooser',
                                 '--win-menu',
                                 '--win-shortcut'
             ]
         } else if(os.macOsX) {
-            imageOptions = ['--app-version', version,
-                            '--icon', './package/wavesfx_mac_icon.icns',]
+            imageOptions = ['--icon', './package/wavesfx_mac_icon.icns',]
             jpackageHome = getJpackagePath('/usr/local/lib/jpackage')
             jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/Contents/Home/bin/wavesfx_splash.png']
             installerType = 'dmg'
@@ -103,6 +107,9 @@ jlink {
             jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/lib/runtime/bin/wavesfx_splash.png']
             jpackageHome = getJpackagePath('/usr/lib/jvm/jpackage')
             installerType = "deb"
+            installerOptions += [
+                    '--linux-shortcut'
+            ]
         }
     }
 }
