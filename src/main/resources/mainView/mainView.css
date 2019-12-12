@@ -15,6 +15,10 @@
     -fx-border-color: transparent transparent #E2E2E2 transparent;
 }*/
 
+.context-menu {
+    -fx-font-size: 12px;
+}
+
 .list-view {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #DAE1E9;
