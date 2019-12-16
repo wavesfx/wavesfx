@@ -3,6 +3,7 @@ package com.wavesfx.wavesfx.gui.accountCreator;
 import com.wavesfx.wavesfx.bus.RxBus;
 import com.wavesfx.wavesfx.gui.FXMLView;
 import com.wavesfx.wavesfx.gui.login.LoginController;
+import com.wavesplatform.wavesj.Base58;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ public class ImportAccountController extends AccountCreatorController  {
     private static final Logger log = LogManager.getLogger();
 
     @FXML private ToggleGroup toggleGroup;
+    @FXML private RadioButton encodedSeedAccountRadioButton;
     @FXML private RadioButton seedAccountRadioButton;
     @FXML private RadioButton pkeyAccountRadioButton;
     @FXML private TextArea seedTextArea;
@@ -50,7 +52,11 @@ public class ImportAccountController extends AccountCreatorController  {
 
     @FXML
     void next(ActionEvent event) {
-        accountCreator.setSeed(seedTextArea.getText());
+        if (encodedSeedAccountRadioButton.isSelected())
+            accountCreator.setSeed(new String(Base58.decode(seedTextArea.getText())));
+        else {
+            accountCreator.setSeed(seedTextArea.getText());
+        }
         switchRootScene(FXMLView.LOGIN_INFO, new LoginInfoController(rxBus, accountCreator));
     }
 

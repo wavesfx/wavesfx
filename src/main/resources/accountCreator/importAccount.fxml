@@ -27,10 +27,11 @@
                                                 <ToggleGroup fx:id="toggleGroup" />
                                             </toggleGroup>
                                         </RadioButton>
+                                        <RadioButton fx:id="encodedSeedAccountRadioButton" mnemonicParsing="false" styleClass="form-toggle" text="%encoded_seed" toggleGroup="$toggleGroup" />
                                         <RadioButton fx:id="pkeyAccountRadioButton" mnemonicParsing="false" styleClass="form-toggle" text="%pkey" toggleGroup="$toggleGroup" />
                                     </children>
                                 </VBox>
-                                <AnchorPane layoutY="267.0" prefWidth="376.0">
+                                <AnchorPane layoutY="291.0" prefWidth="376.0">
                                     <children>
                                         <Label styleClass="warning" text="%warning" />
                                         <Label layoutY="20.0" prefWidth="355.0" styleClass="input-label" text="%seed_disclaimer" wrapText="true" />

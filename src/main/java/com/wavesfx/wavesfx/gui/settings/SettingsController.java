@@ -20,6 +20,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class SettingsController extends MasterController {
     private ConfigService configService;
@@ -32,8 +34,10 @@ public class SettingsController extends MasterController {
     @FXML private Label messageLimitLabel;
     @FXML private Label assetLimitLabel;
     @FXML private Button saveButton;
+    @FXML private Button showEncodedSeedButton;
     @FXML private Button showSeedButton;
     @FXML private Button showPkeyButton;
+    @FXML private TextField encodedSeedTextField;
     @FXML private TextField nodeAddressTextField;
     @FXML private TextField seedTextField;
     @FXML private TextField privateKeyTextField;
@@ -55,8 +59,8 @@ public class SettingsController extends MasterController {
                 .subscribe(publicKeyTextField::setText);
 
         if (profile.isPrivateKeyAccount()) {
-            showSeedButton.setDisable(true);
-            seedTextField.setDisable(true);
+            Stream.of(showSeedButton, seedTextField, showEncodedSeedButton, encodedSeedTextField)
+                    .forEach(node -> node.setDisable(true));
         }
 
         final var observableIsValidNode = JavaFxObservable.valuesOf(nodeAddressTextField.textProperty())
@@ -70,22 +74,15 @@ public class SettingsController extends MasterController {
         JavaFxObservable.actionEventsOf(saveButton)
                 .subscribe(actionEvent -> saveChanges());
 
-        JavaFxObservable.actionEventsOf(showSeedButton)
-                .doOnNext(ae -> seedTextField.setText(profile.getSeed()))
-                .delay(MASK_COUNTER, TimeUnit.SECONDS, Schedulers.io())
-                .subscribe(actionEvent -> seedTextField.setText(MASK));
-
-        JavaFxObservable.actionEventsOf(showPkeyButton)
-                .map(ae -> Base58.encode(getPrivateKeyAccount().getPrivateKey()))
-                .doOnNext(privateKeyTextField::setText)
-                .delay(MASK_COUNTER, TimeUnit.SECONDS, Schedulers.io())
-                .subscribe(actionEvent -> privateKeyTextField.setText(MASK));
+        temporarilyShowStringObservable(showSeedButton, seedTextField, () -> profile.getSeed());
+        temporarilyShowStringObservable(showEncodedSeedButton, encodedSeedTextField, () -> Base58.encode(profile.getSeed().getBytes()));
+        temporarilyShowStringObservable(showPkeyButton, privateKeyTextField, () -> Base58.encode(getPrivateKeyAccount().getPrivateKey()));
 
     }
 
     private void hideTextFields() {
-        privateKeyTextField.setText(MASK);
-        seedTextField.setText(MASK);
+        Stream.of(privateKeyTextField, seedTextField, encodedSeedTextField)
+                .forEach(textField -> textField.setText(MASK));
     }
 
     private void saveChanges() throws URISyntaxException {
@@ -103,5 +100,13 @@ public class SettingsController extends MasterController {
     private boolean isValidNode(final String node) {
         final var nodeLowerCase = node.toLowerCase();
         return (nodeLowerCase.startsWith("http://") || nodeLowerCase.startsWith("https://"));
+    }
+
+    private void temporarilyShowStringObservable(Button button, TextField textField, Supplier<String> secretString) {
+        JavaFxObservable.actionEventsOf(button)
+                .map(ae -> secretString.get())
+                .doOnNext(textField::setText)
+                .delay(MASK_COUNTER, TimeUnit.SECONDS, Schedulers.io())
+                .subscribe(actionEvent -> textField.setText(MASK));
     }
 }

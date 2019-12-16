@@ -21,8 +21,12 @@
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                         <Label styleClass="walletView-label" text="%settings">
@@ -50,15 +54,18 @@
                         <Label styleClass="form" text="%publickey" GridPane.rowIndex="4" />
                         <TextField fx:id="publicKeyTextField" editable="false" prefHeight="27.0" prefWidth="300.0" styleClass="transparent-text-field-big" GridPane.rowIndex="5">
                      <GridPane.margin>
-                        <Insets right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </TextField>
                         <Label styleClass="form" text="%backup_phrase" GridPane.rowIndex="6" />
                         <TextField fx:id="seedTextField" editable="false" prefWidth="300.0" styleClass="transparent-text-field-big" text="*********************************************************" GridPane.rowIndex="7" />
                         <Button fx:id="showSeedButton" mnemonicParsing="false" text="%show" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Label styleClass="form" text="%privatekey" GridPane.rowIndex="8" />
-                        <TextField fx:id="privateKeyTextField" editable="false" prefWidth="300.0" styleClass="transparent-text-field-big" text="*********************************************************" GridPane.rowIndex="9" />
-                        <Button fx:id="showPkeyButton" mnemonicParsing="false" text="%show" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <Label styleClass="form" text="%privatekey" GridPane.rowIndex="10" />
+                        <TextField fx:id="privateKeyTextField" editable="false" prefWidth="300.0" styleClass="transparent-text-field-big" text="*********************************************************" GridPane.rowIndex="11" />
+                        <Button fx:id="showPkeyButton" mnemonicParsing="false" text="%show" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                  <Label styleClass="form" text="%encoded_backup_phrase" GridPane.rowIndex="8" />
+                  <TextField fx:id="encodedSeedTextField" editable="false" prefWidth="300.0" styleClass="transparent-text-field-big" text="*********************************************************" GridPane.rowIndex="9" />
+                  <Button fx:id="showEncodedSeedButton" mnemonicParsing="false" text="%show" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                </children>
             </GridPane>
             </children>
