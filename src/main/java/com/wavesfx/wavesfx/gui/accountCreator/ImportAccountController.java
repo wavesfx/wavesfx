@@ -5,6 +5,7 @@ import com.wavesfx.wavesfx.gui.FXMLView;
 import com.wavesfx.wavesfx.gui.login.LoginController;
 import com.wavesplatform.wavesj.Base58;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
+import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,16 +34,14 @@ public class ImportAccountController extends AccountCreatorController  {
 
     @FXML
     	public void initialize() {
-        JavaFxObservable.valuesOf(seedTextArea.textProperty())
-                .map(this::notValid)
+        Observable.merge(JavaFxObservable.valuesOf(seedTextArea.textProperty()),
+                JavaFxObservable.valuesOf(toggleGroup.selectedToggleProperty()))
+                .map(changedValue -> notValid(seedTextArea.getText()))
                 .subscribe(nextButton::setDisable, Throwable::printStackTrace);
 
         JavaFxObservable.valuesOf(pkeyAccountRadioButton.selectedProperty())
                 .map(Boolean::booleanValue)
                 .subscribe(accountCreator::setPrivateKeyAccount);
-
-        JavaFxObservable.valuesOf(toggleGroup.selectedToggleProperty())
-                .subscribe(toggle -> seedTextArea.clear());
     }
 
     @FXML
