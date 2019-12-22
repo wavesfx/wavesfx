@@ -195,6 +195,7 @@
 .text-area.seed {
     -fx-text-alignment: center;
     -fx-font-size: 20px;
+    -fx-margin: 10 0 10 0;
 }
 
 .text-area.seed .text {

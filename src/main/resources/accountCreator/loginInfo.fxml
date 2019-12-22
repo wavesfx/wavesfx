@@ -5,70 +5,51 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" styleClass="rootpane"
-            stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" styleClass="rootpane" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox alignment="TOP_CENTER" layoutX="303.0" layoutY="299.0" styleClass="account-creator"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" layoutX="303.0" layoutY="299.0" styleClass="account-creator" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <AnchorPane maxWidth="1100.0" prefHeight="432.0" prefWidth="1100.0">
-                    <children>
-                        <Label alignment="CENTER" layoutX="425.0" layoutY="80.0" prefHeight="51.0" prefWidth="250.0"
-                               styleClass="account-creator-label" text="%create_account" AnchorPane.topAnchor="80.0">
-                            <font>
-                                <Font size="18.0"/>
-                            </font>
-                        </Label>
-                        <AnchorPane layoutX="413.0" layoutY="157.0" prefWidth="274.0">
-                            <children>
-                                <TextField fx:id="usernameTextField" layoutY="27.0" prefHeight="27.0"
-                                           prefWidth="274.0"/>
-                                <PasswordField fx:id="passwordField" layoutY="98.0" prefHeight="27.0"
-                                               prefWidth="274.0"/>
-                                <PasswordField fx:id="passwordRepeatField" layoutY="166.0" prefHeight="27.0"
-                                               prefWidth="274.0"/>
-                                <Label styleClass="form" text="%account_name"/>
-                                <Label layoutY="71.0" styleClass="form" text="%password"/>
-                                <Label layoutX="1.0" layoutY="142.0" styleClass="form" text="%repeat_password"/>
-                                <Label fx:id="accountExistsLabel" layoutY="54.0" prefHeight="17.0" prefWidth="274.0"
-                                       styleClass="form-input-alert" text="%account_exists" visible="false"/>
-                                <Label fx:id="passwordsNotMatchLabel" layoutX="1.0" layoutY="125.0"
-                                       styleClass="form-input-alert" text="%password_not_match" visible="false"/>
-                                <Label fx:id="weakPasswordLabel" layoutY="193.0" prefHeight="127.0" prefWidth="274.0"
-                                       styleClass="form-input-alert" text="%weak_password" visible="false"
-                                       wrapText="true"/>
-                            </children>
-                        </AnchorPane>
-                        <VBox layoutX="413.0" prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-logo">
-                            <children>
-                                <ImageView fitHeight="52.0" fitWidth="226.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../img/wavesfx_logo.png"/>
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                    </children>
-                </AnchorPane>
+                  <VBox prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-logo">
+                      <children>
+                          <ImageView fitHeight="52.0" fitWidth="226.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../img/wavesfx_logo.png" />
+                              </image>
+                          </ImageView>
+                      </children>
+                  </VBox>
+                  <Label alignment="CENTER" prefHeight="51.0" styleClass="account-creator-label" text="%create_account">
+                      <font>
+                          <Font size="18.0" />
+                      </font>
+                  </Label>
+            <VBox maxWidth="274.0">
+               <children>
+                          <Label styleClass="form" text="%account_name" />
+                          <TextField fx:id="usernameTextField" prefHeight="27.0" prefWidth="274.0" />
+                          <Label fx:id="accountExistsLabel" prefHeight="17.0" prefWidth="274.0" styleClass="form-input-alert" text="%account_exists" visible="false" />
+                          <Label styleClass="form" text="%password" />
+                          <PasswordField fx:id="passwordField" prefHeight="27.0" prefWidth="274.0" />
+                          <Label fx:id="passwordsNotMatchLabel" styleClass="form-input-alert" text="%password_not_match" visible="false" />
+                          <Label styleClass="form" text="%repeat_password" />
+                          <PasswordField fx:id="passwordRepeatField" prefHeight="27.0" prefWidth="274.0" />
+                          <Label fx:id="weakPasswordLabel" prefHeight="127.0" prefWidth="274.0" styleClass="form-input-alert" text="%weak_password" visible="false" wrapText="true" />
+               </children>
+            </VBox>
             </children>
         </VBox>
-        <GridPane layoutX="20.0" layoutY="20.0" styleClass="account-creator-footer" AnchorPane.bottomAnchor="0.0"
-                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <GridPane layoutX="20.0" layoutY="20.0" styleClass="account-creator-footer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" styleClass="account-creator-button"
-                        text="%cancel"/>
-                <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" styleClass="account-creator-button"
-                        text="%next" GridPane.columnIndex="2"/>
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" styleClass="account-creator-button" text="%cancel" />
+                <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" styleClass="account-creator-button" text="%next" GridPane.columnIndex="2" />
             </children>
         </GridPane>
     </children>

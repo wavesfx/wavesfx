@@ -1,70 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" styleClass="rootpane" stylesheets="@../mainView/mainView.css"
-            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="rootpane" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox alignment="TOP_CENTER" styleClass="account-creator" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" styleClass="account-creator" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <AnchorPane maxWidth="1100.0" prefWidth="1100.0">
+                <VBox prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-logo">
                     <children>
-                        <VBox layoutX="413.0" prefHeight="40.0" prefWidth="274.0" styleClass="account-creator-logo"
-                              AnchorPane.topAnchor="0.0">
-                            <children>
-                                <ImageView fitHeight="52.0" fitWidth="226.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../img/wavesfx_logo.png"/>
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
-                        <AnchorPane layoutX="413.0" layoutY="157.0">
-                            <children>
-                                <ComboBox fx:id="networkComboBox" layoutY="22.0" styleClass="big"/>
-                                <Label styleClass="input-label" text="%network"/>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="networkPane" layoutX="413.0" layoutY="263.0" prefHeight="63.0"
-                                    prefWidth="274.0">
-                            <children>
-                                <Label styleClass="input-label" text="%network_address"/>
-                                <TextField fx:id="nodeUrlTextField" layoutY="22.0" prefHeight="27.0" prefWidth="198.0"/>
-                                <Label layoutX="215.0" styleClass="input-label" text="%net_id"/>
-                                <TextField fx:id="networkIdTextField" layoutX="215.0" layoutY="22.0" prefHeight="25.0"
-                                           prefWidth="59.0"/>
-                            </children>
-                        </AnchorPane>
-                        <Label alignment="CENTER" layoutX="425.0" layoutY="80.0" prefHeight="51.0" prefWidth="250.0"
-                               styleClass="account-creator-label" text="%waves_network" AnchorPane.topAnchor="80.0">
-                            <font>
-                                <Font size="18.0"/>
-                            </font>
-                        </Label>
+                        <ImageView fitHeight="52.0" fitWidth="226.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/wavesfx_logo.png" />
+                            </image>
+                        </ImageView>
                     </children>
-                </AnchorPane>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+                </VBox>
+                <Label alignment="CENTER" prefHeight="51.0" styleClass="account-creator-label" text="%waves_network">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <VBox maxWidth="274.0">
+                    <children>
+                        <Label styleClass="input-label" text="%network" />
+                        <ComboBox fx:id="networkComboBox" styleClass="big">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin></ComboBox>
+                  <HBox>
+                     <children>
+                        <VBox>
+                           <children>
+                                      <Label styleClass="input-label" text="%network_address" />
+                                      <TextField fx:id="nodeUrlTextField" prefHeight="27.0" prefWidth="198.0" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="17.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox>
+                           <children>
+                                      <Label styleClass="input-label" text="%net_id" />
+                                      <TextField fx:id="networkIdTextField" prefHeight="25.0" prefWidth="59.0" />
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+                    </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+                </VBox>
             </children>
         </VBox>
-        <GridPane styleClass="account-creator-footer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0">
+        <GridPane styleClass="account-creator-footer" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" styleClass="account-creator-button"
-                        text="%back"/>
-                <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" styleClass="account-creator-button"
-                        text="%next" GridPane.columnIndex="2"/>
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#back" styleClass="account-creator-button" text="%back" />
+                <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" styleClass="account-creator-button" text="%next" GridPane.columnIndex="2" />
             </children>
         </GridPane>
     </children>
