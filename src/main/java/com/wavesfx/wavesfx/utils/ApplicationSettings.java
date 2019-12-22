@@ -28,7 +28,7 @@ public class ApplicationSettings {
     public final static String STAGENET_NODE = "https://nodes-stagenet.wavesnodes.com/";
     public final static String TESTNET_NODE = "https://testnode2.wavesnodes.com";
     public final static String VENDOR_NAME = "wavesfx";
-    public final static String[] LANGUAGES = {"de", "en", "fr", "it"};
+    public final static String[] LANGUAGES = {"de", "en", "fr", "it", "nl"};
 
     public static Path getAppPath(final OperatingSystem os) {
         final var childPath = Paths.get(VENDOR_NAME, APPLICATION_NAME);
