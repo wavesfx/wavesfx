@@ -45,7 +45,7 @@ public class TxBroadcastGenerator {
             final var tx = (TransferTransactionV2) transaction;
             return generateBaseJson() +
                     "        recipient: '" + tx.getRecipient() + "',\n" +
-                    "        attachment: '" + tx.getAttachment() + "',\n" +
+                    "        attachment: '" + tx.getAttachment().getBase58String() + "',\n" +
                     "        feeAssetId: null,\n" +
                     "        assetId: " + nullString(tx.getAssetId()) + ",\n" +
                     "        amount: " + tx.getAmount();
@@ -94,6 +94,7 @@ public class TxBroadcastGenerator {
                 "<body>\n" +
                 "    <div>\n" +
                 "        <h3>Transaction Info:</h3>\n" +
+                "        <pre>Note: attachments are Base58 encoded</pre>\n" +
                 "        <pre id=\"txInfo\"></pre>\n" +
                 "    </div>\n" +
                 "    <button onclick=\"broadcastTransaction()\">Broadcast Transaction</button>\n" +

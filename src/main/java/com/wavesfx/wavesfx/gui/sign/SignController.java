@@ -161,7 +161,7 @@ public class SignController extends MasterController {
                 assetIdTextField.getText(),
                 toLong(feeTextField.getText(), mainToken.getDecimals()),
                 mainToken.getAssetId(),
-                "");
+                messageTextArea.getText());
     }
 
     private LeaseTransactionV2 generateLeaseTransaction() {
