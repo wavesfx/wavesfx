@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class ApplicationSettings {
-    public final static AssetDetails MAIN_TOKEN = new AssetDetails("WAVES", 0L, 0L, "", "Waves", "", 8, false, 10000000000000000L, false, null);
+    public final static AssetDetails MAIN_TOKEN = new AssetDetails("WAVES", 0L, 0L, "", "Waves", "", 8, false, 10000000000000000L, false, 100000L);
     public final static char CUSTOM_ID = 'C';
     public final static char MAINNET_ID = 'W';
     public final static char STAGENET_ID = 'S';

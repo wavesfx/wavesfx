@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox layoutX="42.0" layoutY="14.0" prefWidth="400.0" styleClass="fr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+            <Label text="%tx_type" />
+            <ComboBox fx:id="txTypeComboBox" maxWidth="1.7976931348623157E308" />
+                  <Label fx:id="recipientLabel" styleClass="form" text="%recipient" />
+                  <TextField fx:id="recipientAndTxIdTextField" prefWidth="400.0" />
+                  <Label styleClass="form" text="%asset_id" />
+            <TextField fx:id="assetIdTextField" />
+            <Label text="%decimals" />
+            <ComboBox fx:id="decimalsComboBox" prefHeight="30.0" prefWidth="111.0" />
+                  <Label styleClass="form" text="%message" />
+                  <TextArea fx:id="messageTextArea" prefHeight="150.0" prefWidth="400.0" wrapText="true" />
+            <GridPane maxWidth="1.7976931348623157E308">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                        <Label styleClass="form" text="%amount" />
+                        <Label fx:id="messageLimitLabel" alignment="CENTER_RIGHT" graphicTextGap="0.0" prefHeight="17.0" prefWidth="57.0" textFill="#7995b9" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <VBox fillWidth="false" prefHeight="187.0" prefWidth="300.0">
+               <children>
+                        <TextField fx:id="amountTextField" prefWidth="300.0" />
+                        <Label styleClass="form" text="%fee" />
+                        <TextField fx:id="feeTextField" prefWidth="300.0" />
+                        <Button fx:id="sendButton" disable="true" mnemonicParsing="false" text="%sign">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            </children>
+            <padding>
+                <Insets left="20.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</AnchorPane>

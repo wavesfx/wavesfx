@@ -6,7 +6,6 @@ import com.wavesfx.wavesfx.logic.AssetNumeralFormatter;
 import com.wavesfx.wavesfx.logic.Waves;
 import com.wavesplatform.wavesj.Transaction;
 import com.wavesplatform.wavesj.transactions.BurnTransaction;
-import com.wavesplatform.wavesj.transactions.TransferTransaction;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;

@@ -65,6 +65,11 @@
                                         <FontIcon iconLiteral="mdi-layers" />
                                     </graphic>
                                 </Button>
+                        <Button fx:id="signButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-button" text="%sign">
+                           <graphic>
+                              <FontIcon iconLiteral="mdi-pen" />
+                           </graphic>
+                        </Button>
                             </children>
                         </VBox>
                         <VBox fx:id="bottomMenuVBox" layoutX="1.0" layoutY="557.0" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

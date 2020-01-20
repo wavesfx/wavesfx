@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="rootpane" stylesheets="@../mainView/mainView.css" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox alignment="TOP_CENTER" prefHeight="189.0" prefWidth="198.0" styleClass="login-window" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" prefWidth="1100.0" styleClass="login-window" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
               <VBox alignment="TOP_RIGHT">
                   <children>
@@ -67,5 +67,13 @@
                 </AnchorPane>
             </children>
         </VBox>
+      <VBox alignment="BOTTOM_RIGHT" layoutY="672.0" AnchorPane.bottomAnchor="0.0">
+         <children>
+            <RadioButton fx:id="offlineModeRadioButton" mnemonicParsing="false" text="%offline_mode" />
+         </children>
+         <padding>
+            <Insets bottom="30.0" left="30.0" />
+         </padding>
+      </VBox>
     </children>
 </AnchorPane>

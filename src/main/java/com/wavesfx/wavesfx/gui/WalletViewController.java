@@ -7,6 +7,7 @@ import com.wavesfx.wavesfx.gui.dashboard.DashboardController;
 import com.wavesfx.wavesfx.gui.leasing.LeasingController;
 import com.wavesfx.wavesfx.gui.login.LoginController;
 import com.wavesfx.wavesfx.gui.settings.SettingsController;
+import com.wavesfx.wavesfx.gui.sign.SignController;
 import com.wavesfx.wavesfx.gui.style.StyleHandler;
 import com.wavesfx.wavesfx.gui.tokenIssue.TokenIssueController;
 import com.wavesfx.wavesfx.gui.transactions.TransactionsController;
@@ -48,27 +49,30 @@ public class WalletViewController extends MasterController {
     private static final Logger log = LogManager.getLogger();
 
     private final BehaviorSubject<Observable<Long>> afkCounterSubject;
+    private final boolean offlineModeEnabled;
     private final Disposable emitter;
     private static final long AFK_TIMEOUT = 300;
 
     @FXML private BorderPane contentPane;
-    @FXML private VBox topMenuVBox;
-    @FXML private VBox bottomMenuVBox;
-    @FXML private Label networkLabel;
-    @FXML private Label versionLabel;
     @FXML private Button dashboardButton;
-    @FXML private Button transactionsButton;
-    @FXML private Button portfolioButton;
     @FXML private Button leasingButton;
+    @FXML private Button logoutButton;
+    @FXML private Button portfolioButton;
     @FXML private Button sendButton;
     @FXML private Button settingsButton;
-    @FXML private Button logoutButton;
+    @FXML private Button signButton;
     @FXML private Button tokenIssueButton;
+    @FXML private Button transactionsButton;
+    @FXML private Label networkLabel;
+    @FXML private Label versionLabel;
+    @FXML private VBox bottomMenuVBox;
+    @FXML private VBox topMenuVBox;
 
-    public WalletViewController(final RxBus rxBus) {
+    public WalletViewController(final RxBus rxBus, final boolean offlineModeEnabled) {
         super(rxBus);
         emitter = ConnectableObservable
                 .interval(REQUEST_DELAY, TimeUnit.SECONDS, Schedulers.io())
+                .takeWhile(aLong -> !offlineModeEnabled)
                 .subscribe(rxBus.getEmitter()::onNext);
         afkCounterSubject = BehaviorSubject.create();
         final var hashMap = new HashMap<String, AssetDetails>();
@@ -76,33 +80,45 @@ public class WalletViewController extends MasterController {
         rxBus.getAssetDetailsHashMap().onNext(hashMap);
         final var assetDetailsService = new AssetDetailsService(hashMap, MAIN_TOKEN, getNode());
         rxBus.getAssetDetailsService().onNext(assetDetailsService);
+        this.offlineModeEnabled = offlineModeEnabled;
     }
 
     @FXML
 	public void initialize() {
         versionLabel.setText(ApplicationSettings.loadAppVersion());
-        dashboardButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("active"), true);
+
         final var address = loadParent(FXMLView.ADDRESS, new AddressBarController(rxBus));
-        final var dashboard = loadParent(FXMLView.DASHBOARD, new DashboardController(rxBus));
-        final var assets = loadParent(FXMLView.ASSETS, new AssetsController(rxBus));
-        final var transfer = loadParent(FXMLView.TRANSFER, new TransferTabsController(rxBus));
-        final var tokenIssue = loadParent(FXMLView.TOKEN_ISSUE, new TokenIssueController(rxBus));
-        final var transactions = loadParent(FXMLView.TRANSACTIONS, new TransactionsController(rxBus));
-        final var leasing = loadParent(FXMLView.LEASING, new LeasingController(rxBus));
         final var settings = loadParent(FXMLView.SETTINGS, new SettingsController(rxBus));
-
+        final var sign = loadParent(FXMLView.SIGN, new SignController(rxBus));
         contentPane.setTop(address);
-        contentPane.setCenter(dashboard);
-
-        dashboardButton.setOnAction(event -> switchPaneScene(event, dashboard));
-        portfolioButton.setOnAction(event -> switchPaneScene(event, assets));
-        sendButton.setOnAction(event -> switchPaneScene(event, transfer));
-        tokenIssueButton.setOnAction(event -> switchPaneScene(event, tokenIssue));
-        transactionsButton.setOnAction(event -> switchPaneScene(event, transactions));
-        leasingButton.setOnAction(event -> switchPaneScene(event, leasing));
         settingsButton.setOnAction(event -> switchPaneScene(event, settings));
+        signButton.setOnAction(event -> switchPaneScene(event, sign));
         logoutButton.setOnAction(event -> logout());
 
+        if (offlineModeEnabled){
+            signButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("active"), true);
+            contentPane.setCenter(sign);
+            Stream.of(dashboardButton, portfolioButton, sendButton, tokenIssueButton, transactionsButton, leasingButton)
+                    .forEach(button-> button.setDisable(true));
+            rxBus.getEmitter().onComplete();
+        } else {
+            dashboardButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("active"), true);
+            final var dashboard = loadParent(FXMLView.DASHBOARD, new DashboardController(rxBus));
+            final var assets = loadParent(FXMLView.ASSETS, new AssetsController(rxBus));
+            final var transfer = loadParent(FXMLView.TRANSFER, new TransferTabsController(rxBus));
+            final var tokenIssue = loadParent(FXMLView.TOKEN_ISSUE, new TokenIssueController(rxBus));
+            final var transactions = loadParent(FXMLView.TRANSACTIONS, new TransactionsController(rxBus));
+            final var leasing = loadParent(FXMLView.LEASING, new LeasingController(rxBus));
+
+            dashboardButton.setOnAction(event -> switchPaneScene(event, dashboard));
+            portfolioButton.setOnAction(event -> switchPaneScene(event, assets));
+            sendButton.setOnAction(event -> switchPaneScene(event, transfer));
+            tokenIssueButton.setOnAction(event -> switchPaneScene(event, tokenIssue));
+            transactionsButton.setOnAction(event -> switchPaneScene(event, transactions));
+            leasingButton.setOnAction(event -> switchPaneScene(event, leasing));
+
+            contentPane.setCenter(dashboard);
+        }
 
         afkCounterSubject.onNext(createAfkCounter());
         afkCounterSubject.switchMap(longObservable -> longObservable)

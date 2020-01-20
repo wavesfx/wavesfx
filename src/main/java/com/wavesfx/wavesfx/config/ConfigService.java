@@ -14,6 +14,7 @@ public class ConfigService {
 
     private final static String LAST_USED = "last_user";
     private final static String TOS_AGREED = "tos_agreed";
+    private final static String OFFLINE_MODE = "offline_mode";
     private final static String LANG = "lang";
     private final static String ROOT = "Accounts";
     private final static String SEED = ".seed";
@@ -120,4 +121,12 @@ public class ConfigService {
         return fileConfig.getOptional(LAST_USED);
     }
 
+    public void setOfflineMode(boolean bool) {
+        fileConfig.set(OFFLINE_MODE, bool);
+        fileConfig.save();
+    }
+
+    public Optional<Boolean> offlineModeIsEnabled() {
+        return fileConfig.getOptional(OFFLINE_MODE);
+    }
 }

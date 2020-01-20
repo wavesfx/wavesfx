@@ -22,6 +22,7 @@ public enum FXMLView {
     NETWORK("/accountCreator/network.fxml"),
     REISSUE_TOKEN("/dialog/reissueToken.fxml"),
     SEND("/wallet/send.fxml"),
+    SIGN("/wallet/sign.fxml"),
     SETTINGS("/wallet/settings.fxml"),
     SET_SCRIPT("/wallet/setScript.fxml"),
     TOKEN_ISSUE("/wallet/tokenIssue.fxml"),

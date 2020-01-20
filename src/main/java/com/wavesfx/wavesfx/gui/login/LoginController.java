@@ -49,6 +49,7 @@ public class LoginController extends MasterController {
     @FXML private Button newAccountButton;
     @FXML private Button importAccountButton;
     @FXML private Label invalidPassphraseLabel;
+    @FXML private RadioButton offlineModeRadioButton;
 
     public LoginController(final RxBus rxBus) {
         super(rxBus);
@@ -63,6 +64,7 @@ public class LoginController extends MasterController {
         initializeObservableLoginButtons();
         initializeProfileRemover();
         initializepasswordFieldDecorator();
+        initializeOfflineModeBox();
     }
 
     @FXML
@@ -169,7 +171,7 @@ public class LoginController extends MasterController {
              rxBus.getPrivateKeyAccount().onNext(decryptedAccount.loadPrivateKeyAccounts().get(0));
              rxBus.getMainTokenDetails().onNext(MAIN_TOKEN);
              configService.setLastUser(selectedAccount.getName());
-             switchRootScene(FXMLView.WALLET, new WalletViewController(rxBus));
+             switchRootScene(FXMLView.WALLET, new WalletViewController(rxBus, offlineModeRadioButton.isSelected()));
         } catch (Exception e) {
             Observable.just(0).doOnNext(integer -> invalidPassphraseLabel.setVisible(true))
                     .delay(10, TimeUnit.SECONDS)
@@ -226,6 +228,15 @@ public class LoginController extends MasterController {
                 .filter(profile -> profile.getName().equals(configService.getLastUser().orElse("")))
                 .findAny()
                 .ifPresentOrElse(profileComboBox.getSelectionModel()::select, () -> profileComboBox.getSelectionModel().select(0));
+    }
+
+    private void initializeOfflineModeBox() {
+        configService.offlineModeIsEnabled()
+                .ifPresent(offlineModeRadioButton.selectedProperty()::setValue);
+
+        JavaFxObservable.valuesOf(offlineModeRadioButton.selectedProperty())
+                .subscribeOn(Schedulers.io())
+                .subscribe(configService::setOfflineMode);
     }
 
     private LocaleIcon fetchLocaleIcon(String localeName){
