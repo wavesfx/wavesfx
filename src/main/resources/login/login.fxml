@@ -51,8 +51,13 @@
                         <AnchorPane layoutX="413.0" layoutY="358.0" prefWidth="274.0">
                             <children>
                                 <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="274.0" styleClass="login-button" text="%login" />
-                                <Button fx:id="newAccountButton" alignment="BASELINE_LEFT" layoutY="61.0" mnemonicParsing="false" onAction="#newAccount" styleClass="text-button" text="%new_account" />
-                                <Button fx:id="importAccountButton" alignment="BASELINE_RIGHT" layoutX="137.0" layoutY="61.0" mnemonicParsing="false" onAction="#importAccount" prefHeight="17.0" prefWidth="137.0" styleClass="text-button" text="%import_account" />
+                        <HBox layoutY="61.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                                      <Button fx:id="newAccountButton" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#newAccount" styleClass="text-button" text="%new_account" />
+                              <Region HBox.hgrow="ALWAYS" />
+                                      <Button fx:id="importAccountButton" alignment="BASELINE_RIGHT" mnemonicParsing="false" onAction="#importAccount" styleClass="text-button" text="%import_account" />
+                           </children>
+                        </HBox>
                             </children>
                         </AnchorPane>
                   <VBox alignment="CENTER_RIGHT" layoutX="413.0" layoutY="329.0" prefHeight="19.0" prefWidth="274.0">
