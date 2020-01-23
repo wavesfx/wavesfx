@@ -7,6 +7,7 @@ import com.wavesfx.wavesfx.gui.dialog.ConfirmTransferController;
 import com.wavesfx.wavesfx.gui.dialog.DialogWindow;
 import com.wavesfx.wavesfx.gui.style.StyleHandler;
 import com.wavesfx.wavesfx.logic.AssetNumeralFormatter;
+import com.wavesfx.wavesfx.logic.FormValidator;
 import com.wavesfx.wavesfx.logic.Waves;
 import com.wavesfx.wavesfx.utils.ApplicationSettings;
 import com.wavesplatform.wavesj.Alias;
@@ -39,6 +40,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
+import static com.wavesfx.wavesfx.logic.FormValidator.*;
 
 public class DashboardController extends MasterController {
 
@@ -173,7 +175,7 @@ public class DashboardController extends MasterController {
     }
 
     private boolean isValidAlias(final String alias) {
-        if (alias.isEmpty() || alias.length()<4 || alias.length()>30) {
+        if (alias.isEmpty() || alias.length()<4 || alias.length()>30 || !isWellFormed(alias, ALIAS_PATTERN)) {
             return false;
         } else {
             return getNodeService().fetchAddressByAlias(alias).isEmpty();

@@ -88,7 +88,7 @@ public class NodeService {
         try {
             return Optional.of(node.getAddrByAlias(alias));
         } catch (IOException e) {
-            log.error("Error fetching address by alias", e);
+            log.error("Error fetching address by alias");
             return Optional.empty();
         }
     }
