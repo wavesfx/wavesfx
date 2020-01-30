@@ -71,16 +71,11 @@ classes {
 }
 
 ext.os = org.gradle.internal.os.OperatingSystem.current()
-ext.dir = "$buildDir"
 
 jlink {
     launcher {
         name = 'WavesFX'
-        if (os.windows){
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:wavesfx_splash.png"]
-        } else {
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$DIR/wavesfx_splash.png']
-        }
+        jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:{{BIN_DIR}}//wavesfx_splash.png"]
     }
     forceMerge('log4j-api')
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
