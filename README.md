@@ -13,7 +13,7 @@ Releases can be found on the [release](https://github.com/wavesfx/wavesfx/releas
 
 ### Install Java Development Kit (JDK) 13
 
-[OpenJDK](https://jdk.java.net/archive/) and [AdoptOpenJDK](https://adoptopenjdk.net/archive.html) are excellent choices. 
+[OpenJDK](https://jdk.java.net/13/) and [AdoptOpenJDK](https://adoptopenjdk.net/archive.html) are excellent choices. 
 
 ## 2. Obtain Source Code
 
