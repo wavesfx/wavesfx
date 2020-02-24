@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
@@ -55,10 +56,11 @@ public class TransactionsController extends MasterController {
         initializeTxFilter();
         initializeTableView();
 
-        privateKeyAccountSubject.subscribe(pk -> transactionList.setAll());
+        privateKeyAccountSubject.observeOn(JavaFxScheduler.platform())
+                .subscribe(pk -> clearTableViewForReload());
 
         final var txAmountObservable = JavaFxObservable.valuesOf(txAmountComboBox.getSelectionModel().selectedItemProperty())
-                .map(integer -> transactionList.setAll());
+                .doOnNext(integer -> clearTableViewForReload());
 
         ConnectableObservable.merge(privateKeyAccountSubject, emitter, txAmountObservable)
                 .switchMap(o -> loadTransactionHistoryObservable())
@@ -70,7 +72,7 @@ public class TransactionsController extends MasterController {
 
     }
 
-    private Observable<List<TransactionDetails>> loadTransactionHistoryObservable(){
+    private Observable<List<TransactionDetails>> loadTransactionHistoryObservable() {
         return Observable.just(0)
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(Schedulers.io())
@@ -122,10 +124,17 @@ public class TransactionsController extends MasterController {
         }
     }
 
+    private void clearTableViewForReload() {
+        final var loadingLabel = new Label(getMessages().getString("loading"));
+        transactionList.clear();
+        transactionsTableView.setPlaceholder(loadingLabel);
+    }
+
     private void populateList(List<TransactionDetails> list) {
         final var focusedItem = transactionsTableView.selectionModelProperty().get().getFocusedIndex();
         transactionList.clear();
         transactionList.setAll(list);
+        transactionsTableView.setPlaceholder(new Label());
         transactionsTableView.selectionModelProperty().get().focus(focusedItem);
     }
 }
