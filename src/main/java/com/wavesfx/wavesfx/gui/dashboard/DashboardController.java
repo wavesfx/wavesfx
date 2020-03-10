@@ -142,7 +142,7 @@ public class DashboardController extends MasterController {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .retry()
-                .map(strings -> strings.stream().map(s -> Alias.fromString(s).getName()).sorted().collect(Collectors.toUnmodifiableList()))
+                .map(this::sortAliasesAlphabetically)
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(this::updateAliasList, Throwable::printStackTrace);
 
@@ -195,4 +195,10 @@ public class DashboardController extends MasterController {
         aliasTextField.clear();
     }
 
+    private List<String> sortAliasesAlphabetically(List<String> listOfAliases) {
+        return listOfAliases.stream()
+                .map(s -> Alias.fromString(s).getName())
+                .sorted()
+                .collect(Collectors.toUnmodifiableList());
+    }
 }
