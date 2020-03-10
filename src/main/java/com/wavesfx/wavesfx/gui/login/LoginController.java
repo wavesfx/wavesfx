@@ -216,7 +216,7 @@ public class LoginController extends MasterController {
     private List<LocaleIcon> getLocaleIcons() {
         return Arrays.stream(LANGUAGES)
                 .map(this::fetchLocaleIcon)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private void initializeProfileComboBox() {

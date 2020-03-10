@@ -87,7 +87,7 @@ public final class Profile {
         if (!isPrivateKeyAccount) {
             return IntStream.rangeClosed(0, nonce)
                     .mapToObj(i -> PrivateKeyAccount.fromSeed(seed, i, (byte) networkId))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
         } else {
             return List.of(PrivateKeyAccount.fromPrivateKey(seed, (byte) networkId));
         }

@@ -91,12 +91,12 @@ public class AssetsController extends MasterController {
         final var assets = assetBalanceList.stream()
                 .map(assetBalance1 -> (Transferable) new Asset(assetBalance1))
                 .sorted(Comparator.comparing(Transferable::getName, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
 
         final var wavesBalance = (Transferable) wavesBalance();
         final var portfolio = Stream.of(List.of(wavesBalance), assets)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
 
         rxBus.getAssetList().onNext(portfolio);
     }

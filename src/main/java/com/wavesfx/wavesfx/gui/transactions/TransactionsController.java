@@ -108,7 +108,7 @@ public class TransactionsController extends MasterController {
         return txs.stream().parallel()
                 .map(tx -> new TransactionDetails(assetDetailsService, tx, address, getMessages()))
                 .sorted(Comparator.comparingLong(TransactionDetails::getEpochDateTime).reversed())
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
 
     }
 

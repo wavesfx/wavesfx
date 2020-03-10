@@ -170,13 +170,13 @@ public class MoveAssetsController extends MasterController {
         return transferableList.stream()
                 .map(transferable -> Transactions.makeTransferTx(privateKeyAccount, address, transferable.balanceAsLong(),
                         transferable.getAssetId(), Waves.FEE, Waves.ASSET_ID, ""))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private List<TransferTransaction> updateTransactionFees (List<TransferTransaction> transferTransactions){
         return transferTransactions.stream().parallel()
                 .map(tx -> updateTransactionFee(tx, getNodeService().calculateFee(tx).orElse(tx.getFee())))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private TransferTransaction updateTransactionFee(final TransferTransaction tx, final long fee) {

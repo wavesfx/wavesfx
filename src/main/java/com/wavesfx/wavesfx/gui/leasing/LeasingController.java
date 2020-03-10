@@ -159,7 +159,7 @@ public class LeasingController extends MasterController {
         return activeLeases.stream()
                 .map(tx -> new TransactionDetails(assetDetailsService, tx, address, getMessages()))
                 .sorted(Comparator.comparingLong(TransactionDetails::getEpochDateTime).reversed())
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private void populateList(List<TransactionDetails> list) {

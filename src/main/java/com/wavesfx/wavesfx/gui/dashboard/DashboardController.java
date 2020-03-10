@@ -142,7 +142,7 @@ public class DashboardController extends MasterController {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .retry()
-                .map(strings -> strings.stream().map(s -> Alias.fromString(s).getName()).sorted().collect(Collectors.toList()))
+                .map(strings -> strings.stream().map(s -> Alias.fromString(s).getName()).sorted().collect(Collectors.toUnmodifiableList()))
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(this::updateAliasList, Throwable::printStackTrace);
 
@@ -171,7 +171,7 @@ public class DashboardController extends MasterController {
 
         return blockHeaders.stream()
                 .map(blockHeader -> new BlockInfoBox(blockHeader, getMessages(), blockCount.apply(counter)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private boolean isValidAlias(final String alias) {

@@ -134,7 +134,7 @@ public class BurnAssetsController extends MasterController {
 
     private void populateList(List<Transferable> list) {
         final var filteredList = list.stream().filter(transferable -> !transferable.getAssetId().equals(Waves.ASSET_ID))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
         final var selectedItems = assetListView.getSelectionModel().getSelectedIndices().stream()
                 .mapToInt(value -> value).toArray();
         assetList.clear();
@@ -159,13 +159,13 @@ public class BurnAssetsController extends MasterController {
         return transferableList.stream()
                 .map(transferable -> Transactions.makeBurnTx(privateKeyAccount, privateKeyAccount.getChainId(), transferable.getAssetId(),
                         transferable.balanceAsLong(), Waves.FEE*3))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private List<BurnTransaction> updateTransactionFees (List<BurnTransaction> burnTransactionList){
         return burnTransactionList.stream().parallel()
                 .map(tx -> updateTransactionFee(tx, getNodeService().calculateFee(tx).orElse(tx.getFee())))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private BurnTransaction updateTransactionFee(final BurnTransaction tx, final long fee) {

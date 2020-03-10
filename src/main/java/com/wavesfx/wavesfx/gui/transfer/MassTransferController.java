@@ -180,14 +180,14 @@ public class MassTransferController extends TransferTransactionController  {
                 .map(Transfer::getRecipient)
                 .filter(recipient -> !AddressValidator.validateAddress(recipient, privateKeyAccount.getChainId()))
                 .limit(10)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private List<Transfer> fetchListOfTransfers(final Transferable selectedAsset, final String[] transfers) {
         return Arrays.stream(transfers)
                 .map(string -> string.split(","))
                 .map(s -> new Transfer(s[0], toLong(s[1], selectedAsset.getDecimals())))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private boolean isWellFormed(final String[] transfers) {
