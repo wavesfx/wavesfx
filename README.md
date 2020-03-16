@@ -11,9 +11,9 @@ Releases can be found on the [release](https://github.com/wavesfx/wavesfx/releas
 
 ## 1. Prerequisites
 
-### Install Java Development Kit (JDK) 13
+### Install Java Development Kit (JDK) 14
 
-[OpenJDK](https://jdk.java.net/13/) and [AdoptOpenJDK](https://adoptopenjdk.net/archive.html) are excellent choices. 
+[OpenJDK](https://jdk.java.net/14/) and [AdoptOpenJDK](https://adoptopenjdk.net/archive.html) are excellent choices. 
 
 ## 2. Obtain Source Code
 
@@ -24,9 +24,8 @@ cd wavesfx
 ## 3. Compilation and packaging
 ### Build binary package
 ```
-./gradlew "-Ddownload.jpackage=true" jpackageImage 
+./gradlew jpackageImage 
 ```
-Leave out `"-Ddownload.jpackage=true"` if [jpackage](https://jdk.java.net/jpackage/) is already installed on the system (set jpackage path in `build.gradle`). 
 Package will be located in `build/jpackage`   
 ### Build installer
 **Note:** Wix, a third-party tool, is required to generate an installer for Windows.
