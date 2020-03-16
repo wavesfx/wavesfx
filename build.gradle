@@ -2,7 +2,6 @@ plugins {
     id 'application'
     id 'org.beryx.jlink' version '2.17.1'
     id 'org.openjfx.javafxplugin' version '0.0.8'
-    id "de.undercouch.download" version "4.0.4"
     id 'maven'
 }
 
@@ -92,7 +91,6 @@ jlink {
         ]
         if (os.windows) {
             imageOptions = ['--icon', './package/wavesfx_icon.ico']
-            jpackageHome = getJpackagePath("C:/Program Files/Java/jpackage")
             jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/bin/wavesfx_splash.png']
             installerType = "msi"
             installerOptions += ['--win-upgrade-uuid', 'd4a56a68-bdc2-4138-8572-84fc72c11fbc',
@@ -102,13 +100,11 @@ jlink {
             ]
         } else if(os.macOsX) {
             imageOptions = ['--icon', './package/wavesfx_mac_icon.icns',]
-            jpackageHome = getJpackagePath('/usr/local/lib/jpackage')
             jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/Contents/Home/bin/wavesfx_splash.png']
             installerType = 'dmg'
         } else if (os.unix) {
             imageOptions = ['--icon', './package/wavesfx_linux_icon.png']
             jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/lib/runtime/bin/wavesfx_splash.png']
-            jpackageHome = getJpackagePath('/usr/lib/jvm/jpackage')
             installerType = "deb"
             installerOptions += [
                     '--linux-shortcut'
@@ -126,51 +122,4 @@ tasks.jlink.doLast {
         }
         into JLINK_DIR + "/image/bin"
     }
-}
-
-String getJpackagePath(jpackageHome) {
-    if(Boolean.getBoolean('download.jpackage')) {
-        return downloadJPackage()
-    } else {
-        return jpackageHome
-    }
-}
-
-String[] getJPackageCoordinates() {
-    if(os.macOsX) return [
-            'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_osx-x64_bin.tar.gz',
-            'tar.gz',
-            'jdk-14.jdk/Contents/Home'
-    ]
-    if(os.windows) return [
-            'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_windows-x64_bin.zip',
-            'zip',
-            'jdk-14'
-    ]
-    return [
-            'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_linux-x64_bin.tar.gz',
-            'tar.gz',
-            'jdk-14'
-    ]
-}
-
-String downloadJPackage() {
-    def (url, extension, directory) = getJPackageCoordinates()
-    def downloadDir = "$buildDir/download"
-    tasks.jpackageImage.doFirst {
-        def execExt = os.windows ? '.exe' : ''
-        if(!file("$downloadDir/$directory/bin/jpackage$execExt").file) {
-            def jdkArchivePath = "$downloadDir/jdk-jpackage.$extension"
-            download {
-                src url
-                dest jdkArchivePath
-                overwrite false
-            }
-            copy {
-                from ((extension == 'tar.gz') ? tarTree(resources.gzip(jdkArchivePath)) : zipTree(jdkArchivePath))
-                into downloadDir
-            }
-        }
-    }
-    return "$downloadDir/$directory"
 }
