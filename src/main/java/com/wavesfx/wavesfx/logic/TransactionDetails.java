@@ -86,21 +86,14 @@ public class TransactionDetails {
 
     public boolean isOfTypeFilter(TxFilter txFilter) {
         final var txType = transaction.getType();
-        switch (txFilter) {
-            case Exchanged:
-                return txType == EXCHANGE;
-            case Received:
-                return !transaction.getSenderPublicKey().getAddress().equals(address) && (txType == TRANSFER || txType == MASS_TRANSFER);
-            case Leased:
-                return txType == LEASE || txType == LEASE_CANCEL;
-            case Issued:
-                return txType == ISSUE || txType == BURN;
-            case Sent:
-                return transaction.getSenderPublicKey().getAddress().equals(address) && (txType == TRANSFER || txType == MASS_TRANSFER);
-            case All:
-                return true;
-        }
-        return false;
+        return switch (txFilter) {
+            case Exchanged -> txType == EXCHANGE;
+            case Received -> !transaction.getSenderPublicKey().getAddress().equals(address) && (txType == TRANSFER || txType == MASS_TRANSFER);
+            case Leased -> txType == LEASE || txType == LEASE_CANCEL;
+            case Issued -> txType == ISSUE || txType == BURN;
+            case Sent -> transaction.getSenderPublicKey().getAddress().equals(address) && (txType == TRANSFER || txType == MASS_TRANSFER);
+            case All -> true;
+        };
     }
 
     public boolean isTransferTransaction() {
@@ -116,36 +109,22 @@ public class TransactionDetails {
     }
 
     private TransactionSummary setTransactionSummary(final Transaction transaction) {
-        switch (transaction.getType()) {
-            case TRANSFER:
-                return generateTransferTransactionInfo((TransferTransaction) transaction);
-            case DATA:
-                return generateDataTransferInfo();
-            case EXCHANGE:
-                return generateExchangeTransactionInfo((ExchangeTransaction) transaction);
-            case LEASE_CANCEL:
-                return generateLeaseCancelTransactionInfo();
-            case LEASE:
-                return generateLeaseTransactionInfo((LeaseTransaction) transaction);
-            case MASS_TRANSFER:
-                return generateMassTransferTransactionInfo((MassTransferTransaction) transaction);
-            case ISSUE:
-                return generateIssueTransactionInfo((IssueTransaction) transaction);
-            case REISSUE:
-                return generateReissueTransactionInfo((ReissueTransaction) transaction);
-            case BURN:
-                return generateBurnTransactionInfo((BurnTransaction) transaction);
-            case SPONSOR:
-                return generateSponsorTransactionInfo((SponsorTransaction) transaction);
-            case ALIAS:
-                return generateAliasTransactionInfo((AliasTransaction) transaction);
-            case CONTRACT_INVOKE:
-                return generateInvokeScriptTransactionInfo((InvokeScriptTransaction) transaction);
-            case SET_ASSET_SCRIPT:
-                return generateSetScriptTransactionInfo((SetScriptTransaction) transaction);
-            default:
-                return messageToTransactionSummary(format("unknown_transaction", transaction.getId()));
-        }
+        return switch (transaction.getType()) {
+            case TRANSFER -> generateTransferTransactionInfo((TransferTransaction) transaction);
+            case DATA -> generateDataTransferInfo();
+            case EXCHANGE -> generateExchangeTransactionInfo((ExchangeTransaction) transaction);
+            case LEASE_CANCEL -> generateLeaseCancelTransactionInfo();
+            case LEASE -> generateLeaseTransactionInfo((LeaseTransaction) transaction);
+            case MASS_TRANSFER -> generateMassTransferTransactionInfo((MassTransferTransaction) transaction);
+            case ISSUE -> generateIssueTransactionInfo((IssueTransaction) transaction);
+            case REISSUE -> generateReissueTransactionInfo((ReissueTransaction) transaction);
+            case BURN -> generateBurnTransactionInfo((BurnTransaction) transaction);
+            case SPONSOR -> generateSponsorTransactionInfo((SponsorTransaction) transaction);
+            case ALIAS -> generateAliasTransactionInfo((AliasTransaction) transaction);
+            case CONTRACT_INVOKE -> generateInvokeScriptTransactionInfo((InvokeScriptTransaction) transaction);
+            case SET_ASSET_SCRIPT -> generateSetScriptTransactionInfo((SetScriptTransaction) transaction);
+            default -> messageToTransactionSummary(format("unknown_transaction", transaction.getId()));
+        };
     }
 
     private TransactionSummary generateTransferTransactionInfo(final TransferTransaction transferTransaction) {

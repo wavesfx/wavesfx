@@ -62,12 +62,7 @@ public class NetworkController extends AccountCreatorController  {
     private void initializeInputs(Net net) {
         nodeUrlTextField.setText(net.getNode());
         networkIdTextField.setText(String.valueOf(net.getNetworkId()));
-
-        if (net == Net.Custom){
-            networkIdTextField.setDisable(false);
-        } else {
-            networkIdTextField.setDisable(true);
-        }
+        networkIdTextField.setDisable(net != Net.Custom);
     }
 
     private void importOrCreateSeed() {

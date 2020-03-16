@@ -7,7 +7,6 @@ import com.wavesfx.wavesfx.gui.dialog.ConfirmTransferController;
 import com.wavesfx.wavesfx.gui.dialog.DialogWindow;
 import com.wavesfx.wavesfx.gui.style.StyleHandler;
 import com.wavesfx.wavesfx.logic.AssetNumeralFormatter;
-import com.wavesfx.wavesfx.logic.FormValidator;
 import com.wavesfx.wavesfx.logic.Waves;
 import com.wavesfx.wavesfx.utils.ApplicationSettings;
 import com.wavesplatform.wavesj.Alias;
@@ -40,7 +39,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
-import static com.wavesfx.wavesfx.logic.FormValidator.*;
+import static com.wavesfx.wavesfx.logic.FormValidator.ALIAS_PATTERN;
+import static com.wavesfx.wavesfx.logic.FormValidator.isWellFormed;
 
 public class DashboardController extends MasterController {
 
