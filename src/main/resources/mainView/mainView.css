@@ -406,21 +406,23 @@
  .scroll-bar:vertical .increment-arrow,
  .scroll-bar:vertical .decrement-arrow{
     -fx-shape : " ";
-    -fx-padding :0.0 0.15em;
+    -fx-padding :0.0 0.30em;
 }
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
     -fx-background-color : #DDE1E7;
     -fx-background-insets : 1.0, 0.0, 0.0;
-    -fx-background-radius : 1.0em;
+    -fx-background-radius : 0.0em;
 }
 
 .scroll-bar:horizontal .thumb:hover,
-.scroll-bar:vertical .thumb:hover {
-    -fx-background-color : #DDE1E7;
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:pressed,
+.scroll-bar:vertical .thumb:pressed {
+    -fx-background-color : #C2C9D3;
     -fx-background-insets : 1.0, 0.0, 0.0;
-    -fx-background-radius : 1.0em;
+    -fx-background-radius : 0.0em;
 }
 
 .side-menu {
