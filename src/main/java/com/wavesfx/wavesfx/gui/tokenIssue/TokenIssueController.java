@@ -13,7 +13,6 @@ import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
-import io.reactivex.rxjavafx.sources.Change;
 import io.reactivex.schedulers.Schedulers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -22,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
@@ -59,8 +59,8 @@ public class TokenIssueController extends MasterController {
                 .map(this::isValidDescription);
 
         final var amountIsValidObservable = ConnectableObservable.combineLatest(
-                JavaFxObservable.valuesOf(amountTextField.textProperty()).observeOn(Schedulers.io()),
-                JavaFxObservable.valuesOf(decimalSlider.valueProperty()).observeOn(Schedulers.io()),
+                JavaFxObservable.valuesOf(amountTextField.textProperty()).throttleLast(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS),
+                JavaFxObservable.valuesOf(decimalSlider.valueProperty()),
                 this::isValidTokenAmount)
                 .onErrorReturn(throwable -> false);
 
@@ -68,10 +68,7 @@ public class TokenIssueController extends MasterController {
                 .observeOn(Schedulers.io())
                 .map(this::isValidScript);
 
-        JavaFxObservable.changesOf(amountTextField.textProperty())
-                .filter(stringChange -> !isWellFormed(stringChange.getNewVal(), AMOUNT_PATTERN))
-                .map(Change::getOldVal)
-                .subscribe(amountTextField::setText);
+        inputCorrectorObservable(amountTextField, MAX_LONG_PATTERN);
 
         StyleHandler.setBorderDisposable(assetNameIsValidObservable, assetNameTextField);
         StyleHandler.setBorderDisposable(descriptionIsValidObservable, descriptionTextField);
