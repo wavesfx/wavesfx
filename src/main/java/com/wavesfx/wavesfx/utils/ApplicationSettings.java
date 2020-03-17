@@ -26,7 +26,7 @@ public class ApplicationSettings {
     public final static String MAINNET_NODE = "https://nodes.wavesnodes.com";
     public final static String RESOURCE_BUNDLE_FILEPATH = "messages";
     public final static String STAGENET_NODE = "https://nodes-stagenet.wavesnodes.com/";
-    public final static String TESTNET_NODE = "https://testnode2.wavesnodes.com";
+    public final static String TESTNET_NODE = "https://testnode1.wavesnodes.com";
     public final static String VENDOR_NAME = "wavesfx";
     public final static String[] LANGUAGES = {"de", "en", "fr", "it", "nl", "pt", "ru"};
 
