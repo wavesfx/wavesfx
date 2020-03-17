@@ -9,7 +9,6 @@ import com.wavesplatform.wavesj.Transactions;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
-import io.reactivex.rxjavafx.sources.Change;
 import io.reactivex.schedulers.Schedulers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
 import static com.wavesfx.wavesfx.logic.FormValidator.AMOUNT_PATTERN;
-import static com.wavesfx.wavesfx.logic.FormValidator.isWellFormed;
+import static com.wavesfx.wavesfx.logic.FormValidator.inputCorrectorObservable;
 import static com.wavesfx.wavesfx.utils.ApplicationSettings.TOKEN_MAX_AMOUNT;
 
 public class ReissueTokenController extends DialogController  {
@@ -54,10 +53,7 @@ public class ReissueTokenController extends DialogController  {
         initializeTextFields(assetDetails);
         initializeComboBox();
 
-        JavaFxObservable.changesOf(additionalAmountTextField.textProperty())
-                .filter(s -> !isWellFormed(s.getNewVal(), AMOUNT_PATTERN))
-                .map(Change::getOldVal)
-                .subscribe(additionalAmountTextField::setText);
+        inputCorrectorObservable(additionalAmountTextField, AMOUNT_PATTERN);
 
         final var isValidAmountObservable = JavaFxObservable.valuesOf(additionalAmountTextField.textProperty())
                 .observeOn(Schedulers.io())

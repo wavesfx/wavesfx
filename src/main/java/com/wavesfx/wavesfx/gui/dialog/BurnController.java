@@ -3,14 +3,12 @@ package com.wavesfx.wavesfx.gui.dialog;
 import com.wavesfx.wavesfx.bus.RxBus;
 import com.wavesfx.wavesfx.gui.FXMLView;
 import com.wavesfx.wavesfx.gui.style.StyleHandler;
-import com.wavesfx.wavesfx.logic.FormValidator;
 import com.wavesfx.wavesfx.logic.Transferable;
 import com.wavesplatform.wavesj.AssetDetails;
 import com.wavesplatform.wavesj.Transactions;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
-import io.reactivex.rxjavafx.sources.Change;
 import io.reactivex.schedulers.Schedulers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +20,7 @@ import java.util.Optional;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
+import static com.wavesfx.wavesfx.logic.FormValidator.*;
 
 public class BurnController extends DialogController  {
 
@@ -49,10 +48,7 @@ public class BurnController extends DialogController  {
 
         initializeTextFields(assetDetails);
 
-        JavaFxObservable.changesOf(amountTextField.textProperty())
-                .filter(s -> !FormValidator.isWellFormed(s.getNewVal(), FormValidator.AMOUNT_PATTERN))
-                .map(Change::getOldVal)
-                .subscribe(amountTextField::setText);
+        inputCorrectorObservable(amountTextField, AMOUNT_PATTERN);
 
         final var isValidAmountObservable = JavaFxObservable.valuesOf(amountTextField.textProperty())
                 .observeOn(Schedulers.io())
@@ -83,7 +79,7 @@ public class BurnController extends DialogController  {
     }
 
     private boolean isValidAmount(String amount) {
-        if (amount.isEmpty() || !FormValidator.isWellFormed(amount, FormValidator.AMOUNT_PATTERN))
+        if (amount.isEmpty() || !isWellFormed(amount, AMOUNT_PATTERN))
             return false;
         try {
             final var amountAsLong = toLong(amount, transaction.getDecimals());

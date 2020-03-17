@@ -14,7 +14,6 @@ import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
-import io.reactivex.rxjavafx.sources.Change;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import javafx.collections.FXCollections;
@@ -34,6 +33,8 @@ import java.util.stream.Collectors;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
+import static com.wavesfx.wavesfx.logic.FormValidator.AMOUNT_PATTERN;
+import static com.wavesfx.wavesfx.logic.FormValidator.inputCorrectorObservable;
 import static com.wavesfx.wavesfx.utils.ApplicationSettings.INPUT_REQUEST_DELAY;
 
 public class LeasingController extends MasterController {
@@ -68,10 +69,7 @@ public class LeasingController extends MasterController {
         privateKeyAccountSubject
                 .subscribe(pk -> transactionList.setAll());
 
-        JavaFxObservable.changesOf(amountTextField.textProperty())
-                .filter(s -> !FormValidator.isWellFormed(s.getNewVal(), FormValidator.AMOUNT_PATTERN))
-                .map(Change::getOldVal)
-                .subscribe(amountTextField::setText);
+        inputCorrectorObservable(amountTextField, AMOUNT_PATTERN);
 
         Observable.merge(rxBus.getBalanceDetails(), privateKeyAccountSubject)
                 .observeOn(Schedulers.io())

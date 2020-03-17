@@ -1,5 +1,10 @@
 package com.wavesfx.wavesfx.logic;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.rxjavafx.sources.Change;
+import javafx.scene.control.TextField;
+
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -17,5 +22,12 @@ public class FormValidator {
 
     public static boolean isWellFormed(String message, Pattern pattern) {
         return pattern.matcher(message).matches();
+    }
+
+    public static Disposable inputCorrectorObservable(TextField textField, Pattern pattern) {
+        return JavaFxObservable.changesOf(textField.textProperty())
+                .filter(stringChange -> !isWellFormed(stringChange.getNewVal(), pattern))
+                .map(Change::getOldVal)
+                .subscribe(textField::setText);
     }
 }
