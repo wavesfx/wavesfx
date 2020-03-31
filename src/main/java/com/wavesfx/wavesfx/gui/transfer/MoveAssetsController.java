@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MoveAssetsController extends MasterController {
 
@@ -203,9 +204,10 @@ public class MoveAssetsController extends MasterController {
             final var oldTx = wavesTx.get();
             final var newTx = Transactions.makeTransferTx(privateKeyAccount, oldTx.getRecipient(), oldTx.getAmount() - fee,
                     oldTx.getAssetId(), oldTx.getFee(), oldTx.getFeeAssetId(), "");
-            transactions.remove(oldTx);
-            transactions.add(newTx);
-            return transactions;
+            final var filteredList = transactions.stream()
+                    .filter(tx -> !tx.equals(oldTx))
+                    .collect(Collectors.toUnmodifiableList());
+            return Stream.concat(filteredList.stream(), Stream.of(newTx)).collect(Collectors.toUnmodifiableList());
         }
 
     }
