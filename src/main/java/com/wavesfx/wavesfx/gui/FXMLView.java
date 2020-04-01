@@ -9,6 +9,7 @@ public enum FXMLView {
     BURN_TOKEN("/dialog/burnToken.fxml"),
     CONFIRM_SEED("/accountCreator/confirmSeed.fxml"),
     CONFIRM_BURN_ASSETS("/dialog/confirmBurnAssets.fxml"),
+    CONFIRM_MASS_TRANSFER("/dialog/confirmMassTransfer.fxml"),
     CONFIRM_MOVE_ASSETS("/dialog/confirmMoveAssets.fxml"),
     CONFIRM_TRANSACTION("/dialog/confirmTransfer.fxml"),
     DASHBOARD("/wallet/dashboard.fxml"),

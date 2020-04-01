@@ -17,6 +17,7 @@ public class ApplicationSettings {
     public final static char TESTNET_ID = 'T';
     public final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public final static int INPUT_REQUEST_DELAY = 1000;
+    public final static int MAX_MASS_TX_SIZE = 100;
     public final static int NET_REQUEST_DELAY = 100;
     public final static int REQUEST_DELAY = 5;
     public final static int TX_LIST_REQUEST_DELAY = 30; // Do not set the value too low!

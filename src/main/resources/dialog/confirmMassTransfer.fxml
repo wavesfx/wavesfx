@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<AnchorPane fx:id="rootPane" styleClass="dialog" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox fx:id="dialogVBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label styleClass="head-label" text="%confirm_transaction" />
+            <GridPane fx:id="recipientGridPane1" focusTraversable="true" minHeight="40.0" styleClass="grid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TextField fx:id="assetTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0" prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1" />
+                  <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%asset">
+                     <styleClass>
+                        <String fx:value="transparent-text-field" />
+                        <String fx:value="property" />
+                     </styleClass>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </GridPane>
+            <GridPane fx:id="recipientGridPane" focusTraversable="true" minHeight="40.0" styleClass="grid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TextField fx:id="transactionsTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0" prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1" />
+                  <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%transactions">
+                     <styleClass>
+                        <String fx:value="transparent-text-field" />
+                        <String fx:value="property" />
+                     </styleClass>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </GridPane>
+            <GridPane fx:id="recipientGridPane2" focusTraversable="true" minHeight="40.0" styleClass="grid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TextField fx:id="totalAmountTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0" prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1" />
+                  <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%total_amount">
+                     <styleClass>
+                        <String fx:value="transparent-text-field" />
+                        <String fx:value="property" />
+                     </styleClass>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </GridPane>
+                <GridPane minHeight="40.0" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%estimated_fee">
+                            <styleClass>
+                                <String fx:value="transparent-text-field" />
+                                <String fx:value="property" />
+                            </styleClass>
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="feeTextField" alignment="CENTER_RIGHT" editable="false" prefHeight="17.0" prefWidth="248.0" styleClass="transparent-text-field" GridPane.columnIndex="1" />
+                    </children>
+                </GridPane>
+                <TextArea fx:id="resultTextArea" editable="false" scrollLeft="NaN" scrollTop="NaN" styleClass="transparent-text-area" wrapText="true" />
+            <VBox alignment="CENTER">
+               <children>
+                  <ProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="300.0" progress="0.0" visible="false" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="40.0" />
+                <GridPane minHeight="40.0" style="-fx-border-width: 0;" styleClass="grid">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#closeDialog" styleClass="dialog-button" text="%cancel" />
+                        <Button fx:id="sendButton" mnemonicParsing="false" styleClass="dialog-button" text="%send" GridPane.columnIndex="1" />
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

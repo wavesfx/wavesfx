@@ -4,13 +4,15 @@ import com.wavesfx.wavesfx.bus.RxBus;
 import com.wavesfx.wavesfx.gui.FXMLView;
 import com.wavesfx.wavesfx.gui.assets.AssetCell;
 import com.wavesfx.wavesfx.gui.assets.AssetConverterProfile;
-import com.wavesfx.wavesfx.gui.dialog.ConfirmTransferController;
+import com.wavesfx.wavesfx.gui.dialog.ConfirmMassTransferController;
 import com.wavesfx.wavesfx.gui.style.StyleHandler;
 import com.wavesfx.wavesfx.logic.AddressValidator;
 import com.wavesfx.wavesfx.logic.FormValidator;
 import com.wavesfx.wavesfx.logic.Transferable;
+import com.wavesfx.wavesfx.utils.ApplicationSettings;
 import com.wavesplatform.wavesj.Transactions;
 import com.wavesplatform.wavesj.Transfer;
+import com.wavesplatform.wavesj.transactions.MassTransferTransaction;
 import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
@@ -25,7 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
@@ -58,61 +62,78 @@ public class MassTransferController extends TransferTransactionController  {
 
         final var assetObservable = JavaFxObservable.nullableValuesOf(assetComboBox.valueProperty());
 
+        final var assetIsNotEmptyObservable = assetObservable
+                .map(transferable -> !assetComboBox.getSelectionModel().isEmpty());
+
+
         final var recipientsObservable = JavaFxObservable.valuesOf(recipientTextArea.textProperty());
 
-        final var amountIsValidObservable = JavaFxObservable.valuesOf(amountTextField.textProperty())
-                .map(this::isValidAmount).cache();
-
-        final var feeIsValidObservable = JavaFxObservable.valuesOf(feeTextField.textProperty())
-                .map(this::isValidFee).cache();
-
         final var recipientIsValidObservable = recipientsObservable
+                .observeOn(Schedulers.computation())
                 .map(this::hasValidRecipients);
+
+        final var validMassTxFormObservable = recipientsObservable
+                .doOnNext(s -> disableSendButton())
+                .observeOn(Schedulers.io())
+                .filter(this::hasValidRecipients);
+
+        final var validMassTxFormBooleanObservable = recipientsObservable
+                .doOnNext(s -> disableSendButton())
+                .observeOn(Schedulers.io())
+                .map(this::hasValidRecipients);
+
+        final var transferListObservable = validMassTxFormObservable
+                .map(this::getRecipients)
+                .map(strings -> fetchListOfTransfers(assetComboBox.getSelectionModel().getSelectedItem(), strings));
 
         final var messageIsValidObservable = JavaFxObservable.valuesOf(messageTextArea.textProperty())
                 .map(this::isValidMessage);
-
-        final var assetIsNotEmptyObservable = assetObservable
-                .map(transferable -> !assetComboBox.getSelectionModel().isEmpty());
 
         final var assetAndAmountIsValidObservable = ConnectableObservable.combineLatest(
                 JavaFxObservable.valuesOf(amountTextField.textProperty()),
                 JavaFxObservable.valuesOf(assetComboBox.valueProperty()),
                 privateKeyAccountSubject, (amount, asset, privateKeyAccount) -> isValidAmount(amount)).cache();
 
-        final var transferListObservable = recipientsObservable
-                .observeOn(Schedulers.io())
-                .filter(this::hasValidRecipients)
-                .map(this::getRecipients)
-                .map(strings -> fetchListOfTransfers(assetComboBox.getSelectionModel().getSelectedItem(), strings));
-
         StyleHandler.setBorderDisposable(recipientIsValidObservable, recipientTextArea);
         StyleHandler.setBorderDisposable(assetAndAmountIsValidObservable, amountTextField);
         StyleHandler.setBorderDisposable(messageIsValidObservable, messageTextArea);
         StyleHandler.setBorderDisposable(assetIsNotEmptyObservable, assetComboBox);
-        StyleHandler.setBorderDisposable(amountIsValidObservable, amountTextField);
-        StyleHandler.setBorderDisposable(feeIsValidObservable, feeTextField);
-
-        JavaFxObservable.actionEventsOf(sendButton)
-                .subscribe(ae -> sendTranscation());
 
         transferListObservable
+                .observeOn(JavaFxScheduler.platform())
+                .doOnNext(t -> setCalculateFeeText())
                 .observeOn(Schedulers.computation())
                 .map(transfers -> toReadable(calculateTotalAmount(transfers), assetComboBox.getSelectionModel().getSelectedItem().getDecimals()))
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(amountTextField::setText);
 
-        ConnectableObservable.combineLatest(transferListObservable, assetObservable, (list, asset) -> list)
+        final var transactionsWithFeeObservable =
+                transferListObservable
                 .observeOn(Schedulers.io())
                 .filter(transfers -> assetComboBox.getSelectionModel().getSelectedItem() != null)
-                .map(transfers -> toReadable(calculateFee(transfers), mainToken.getDecimals()))
+                .switchMap(s -> Observable.just(s).delay(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS))
+                .map(this::calculateFees)
+                .doOnNext(rxBus.getMassTransferTransactions()::onNext);
+
+        final var hasSufficientFundsObservable = transactionsWithFeeObservable
+                .map(this::getTotalFee)
+                .map(this::isValidFee);
+
+        StyleHandler.setBorderDisposable(hasSufficientFundsObservable, feeTextField);
+
+        transactionsWithFeeObservable
+                .map(this::getTotalFee)
+                .map(fee -> toReadable(fee, mainToken.getDecimals()))
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(feeTextField::setText);
 
-        Observable.combineLatest(recipientIsValidObservable, messageIsValidObservable, assetAndAmountIsValidObservable,
-                assetIsNotEmptyObservable, FormValidator::areValid)
+        Observable.combineLatest(validMassTxFormBooleanObservable, messageIsValidObservable, assetIsNotEmptyObservable,
+                hasSufficientFundsObservable, FormValidator::areValid)
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(b -> sendButton.setDisable(!b));
+
+        JavaFxObservable.actionEventsOf(sendButton)
+                .subscribe(ae -> sendTranscation());
 
     }
 
@@ -124,7 +145,6 @@ public class MassTransferController extends TransferTransactionController  {
         final var selectedAsset = assetComboBox.getSelectionModel().getSelectedItem();
         final String[] splitString = getRecipients(address);
         if (isWellFormed(splitString) || selectedAsset == null) return false;
-        if (splitString.length > 100) return false;
 
         final var transferList = fetchListOfTransfers(selectedAsset, splitString);
         final var listOfInvalidAddresses = getListOfInvalidAddresses(transferList);
@@ -138,16 +158,7 @@ public class MassTransferController extends TransferTransactionController  {
     }
 
     private void sendTranscation() {
-        final var privateKeyAccount = getPrivateKeyAccount();
-        final var selectedAsset = assetComboBox.getSelectionModel().getSelectedItem();
-        final var splitString = getRecipients(recipientTextArea.getText());
-        final var transferList = fetchListOfTransfers(selectedAsset, splitString);
-        final var fee = toLong(feeTextField.getText(), mainToken.getDecimals());
-        final var tx = Transactions.makeMassTransferTx(privateKeyAccount, selectedAsset.getAssetId(), transferList,
-                fee, messageTextArea.getText());
-        rxBus.getTransaction().onNext(tx);
-
-        final var parent = loadParent(FXMLView.CONFIRM_TRANSACTION, new ConfirmTransferController(rxBus));
+        final var parent = loadParent(FXMLView.CONFIRM_MASS_TRANSFER, new ConfirmMassTransferController(rxBus));
         createDialog(parent);
     }
 
@@ -185,6 +196,7 @@ public class MassTransferController extends TransferTransactionController  {
 
     private List<Transfer> fetchListOfTransfers(final Transferable selectedAsset, final String[] transfers) {
         return Arrays.stream(transfers)
+                .parallel()
                 .map(string -> string.split(","))
                 .map(s -> new Transfer(s[0], toLong(s[1], selectedAsset.getDecimals())))
                 .collect(Collectors.toUnmodifiableList());
@@ -195,29 +207,59 @@ public class MassTransferController extends TransferTransactionController  {
                 .anyMatch(strings -> !FormValidator.isWellFormed(strings, MASS_TX_PATTERN));
     }
 
-    private long calculateFee(final List<Transfer> transferList) {
+    private List<MassTransferTransaction> calculateFees(final List<Transfer> transferList) {
         final var privateKeyAccount = getPrivateKeyAccount();
         final var assetId = Optional.ofNullable(assetComboBox.getSelectionModel().getSelectedItem().getAssetId()).orElse("");
-        final var massTx = Transactions.makeMassTransferTx(privateKeyAccount, assetId, transferList, 0L, messageTextArea.getText());
-        return getNodeService().calculateFee(massTx).orElse(0L);
+        final var batchedTransferList = getBatches(transferList, ApplicationSettings.MAX_MASS_TX_SIZE);
+        return batchedTransferList.stream()
+                .map(txList -> Transactions.makeMassTransferTx(privateKeyAccount, assetId, txList, 0L, messageTextArea.getText()))
+                .map(this::recalculateFee)
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    private boolean isValidFee(final String fee) {
+    private MassTransferTransaction recalculateFee(MassTransferTransaction transaction) {
+        final var privateKeyAccount = getPrivateKeyAccount();
+        final var fee = getNodeService().calculateFee(transaction).orElse(ApplicationSettings.TOKEN_MAX_AMOUNT);
+        return Transactions.makeMassTransferTx(privateKeyAccount, transaction.getAssetId(), transaction.getTransfers(), fee,"");
+    }
+
+    private long getTotalFee(List<MassTransferTransaction> transactionList) {
+        return transactionList.stream()
+                .map(MassTransferTransaction::getFee)
+                .reduce(Long::sum).orElse(ApplicationSettings.TOKEN_MAX_AMOUNT);
+    }
+
+    private boolean isValidFee(final long fee) {
         final var assets = assetComboBox.getItems().stream()
                 .filter(transferable -> transferable.getName().equals(mainToken.getName()))
                 .findAny();
         final var selectedAsset = Optional.ofNullable(assetComboBox.getSelectionModel().getSelectedItem());
-        if (fee.isEmpty() || selectedAsset.isEmpty()) return false;
+        if (fee == 0 || selectedAsset.isEmpty()) return false;
 
         final var waves = assets.get();
         final var wavesBalance = toLong(waves.getBalance(), waves.getDecimals());
-        final var feeAsLong = toLong(fee, waves.getDecimals());
 
         if (selectedAsset.get().getAssetId().equals(mainToken.getAssetId())) {
             final var assetAmount = toLong(amountTextField.getText(), waves.getDecimals());
-            return feeAsLong <= wavesBalance - -assetAmount - feeAsLong;
+            return fee <= wavesBalance - assetAmount - fee;
         }
-        return feeAsLong <= wavesBalance - feeAsLong;
+        return fee <= wavesBalance - fee;
     }
 
+    private <T> List<List<T>> getBatches(List<T> collection, int batchSize) {
+        return IntStream.iterate(0, i -> i < collection.size(), i -> i + batchSize)
+                .mapToObj(i -> collection.subList(i, Math.min(i + batchSize, collection.size())))
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    private void setCalculateFeeText(){
+        feeTextField.setText(getMessages().getString("calculating_fee"));
+        sendButton.setDisable(true);
+    }
+
+    private void disableSendButton() {
+        amountTextField.clear();
+        feeTextField.clear();
+        sendButton.setDisable(true);
+    }
 }
