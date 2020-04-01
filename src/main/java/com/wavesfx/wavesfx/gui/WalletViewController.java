@@ -127,9 +127,11 @@ public class WalletViewController extends MasterController {
                 .subscribe(aLong -> logout(), Throwable::printStackTrace);
 
         networkLabel.setText(Net.getFullNetworkName((char) getPrivateKeyAccount().getChainId()).toString());
-        rxBus.getEmitter().map(aLong -> isConnectedToNode())
+        rxBus.getEmitter()
+                .observeOn(Schedulers.io())
+                .map(aLong -> isConnectedToNode())
                 .observeOn(JavaFxScheduler.platform())
-                .subscribe(aBoolean -> StyleHandler.setConditionedStyle(aBoolean, networkLabel, "network"));
+                .subscribe(aBoolean -> StyleHandler.setConditionedStyle(aBoolean, networkLabel, "network"), Throwable::printStackTrace);
 
         JavaFxObservable.eventsOf(rootPane, InputEvent.ANY)
                 .observeOn(Schedulers.computation())
