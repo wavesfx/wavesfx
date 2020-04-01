@@ -108,7 +108,7 @@ public class SendController extends TransferTransactionController  {
 
         final var feeObservable = validFormObservable.observeOn(Schedulers.io()).filter(Boolean::booleanValue)
                 .map(b2 -> signTransaction())
-                .map(getNodeService()::calculateFee)
+                .map(tx -> getNodeService().calculateFee(tx))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .cache()

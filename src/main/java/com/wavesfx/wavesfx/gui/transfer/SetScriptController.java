@@ -54,13 +54,13 @@ public class SetScriptController extends MasterController {
                 .observeOn(Schedulers.io())
                 .throttleLast(INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS)
                 .filter(Objects::nonNull)
-                .map(getNodeService()::compileScript)
+                .map(s -> getNodeService().compileScript(s))
                 .subscribe(optionalBehaviorSubject::onNext, Throwable::printStackTrace);
 
         final var feeObservable = optionalBehaviorSubject.observeOn(Schedulers.io())
                 .filter(Optional::isPresent)
                 .map(optionalScript -> signTransaction(optionalScript.get(), 1000000L))
-                .map(getNodeService()::calculateFee)
+                .map(tx -> getNodeService().calculateFee(tx))
                 .retry()
                 .filter(Optional::isPresent).map(Optional::get)
                 .cache()

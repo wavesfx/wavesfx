@@ -109,7 +109,7 @@ public class LeasingController extends MasterController {
         validFormObservable.observeOn(Schedulers.io())
                 .filter(aBoolean -> !aBoolean)
                 .map(aBoolean -> signTransaction())
-                .map(getNodeService()::calculateFee)
+                .map(tx -> getNodeService().calculateFee(tx))
                 .retry()
                 .filter(Optional::isPresent)
                 .map(Optional::get)
