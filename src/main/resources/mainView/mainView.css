@@ -902,6 +902,7 @@
     -fx-background-radius: 0 0 0 0;
     -fx-border-color: #1F5AF6;
     -fx-border-width: 1;
+    -fx-min-height: 30px;
 }
 
 .progress-bar .track {
