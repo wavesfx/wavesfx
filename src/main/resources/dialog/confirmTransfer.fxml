@@ -102,7 +102,7 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%fee">
+                        <TextField editable="false" prefHeight="17.0" prefWidth="248.0" text="%estimated_fee">
                             <styleClass>
                                 <String fx:value="transparent-text-field" />
                                 <String fx:value="property" />
