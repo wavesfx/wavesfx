@@ -5,10 +5,10 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="42.0" layoutY="14.0" prefWidth="650.0" styleClass="fr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="42.0" layoutY="14.0" prefWidth="650.0" styleClass="fr" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label styleClass="form" text="%script" />
-            <TextArea fx:id="scriptTextArea" prefHeight="350.0" prefWidth="400.0" wrapText="true" />
+            <TextArea fx:id="scriptTextArea" prefHeight="350.0" prefWidth="400.0" wrapText="true" VBox.vgrow="ALWAYS" />
             <GridPane maxWidth="1.7976931348623157E308">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
@@ -39,6 +39,6 @@
       </VBox>
    </children>
    <padding>
-      <Insets top="10.0" />
+      <Insets bottom="30.0" top="10.0" />
    </padding>
 </AnchorPane>

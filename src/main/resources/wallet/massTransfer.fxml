@@ -6,7 +6,7 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../mainView/mainView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox layoutX="42.0" layoutY="14.0" maxWidth="400.0" prefWidth="400.0" styleClass="fr" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox layoutX="42.0" layoutY="30.0" maxWidth="420.0" prefHeight="365.0" prefWidth="574.0" styleClass="fr" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                   <Label styleClass="form" text="%asset" />
                   <ComboBox fx:id="assetComboBox" minWidth="400.0" prefWidth="400.0" />
@@ -66,6 +66,6 @@
         </VBox>
     </children>
    <padding>
-      <Insets bottom="10.0" top="10.0" />
+      <Insets bottom="20.0" top="10.0" />
    </padding>
 </AnchorPane>
