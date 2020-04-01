@@ -19,7 +19,7 @@
                </rowConstraints>
                <children>
                   <Label fx:id="scriptWarningLabel" alignment="CENTER_RIGHT" graphicTextGap="0.0" prefHeight="17.0" prefWidth="57.0" textFill="#7995b9" GridPane.columnIndex="1" />
-                  <Label styleClass="form" text="%fee" />
+                  <Label styleClass="form" text="%estimated_fee" />
                </children>
             </GridPane>
             <VBox fillWidth="false" prefWidth="300.0">

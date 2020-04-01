@@ -50,7 +50,7 @@
             <VBox maxWidth="300.0">
                <children>
                         <TextField fx:id="amountTextField" editable="false" />
-                        <Label styleClass="form" text="%fee" />
+                        <Label styleClass="form" text="%estimated_fee" />
                         <TextField fx:id="feeTextField" editable="false" />
                         <Button fx:id="sendButton" disable="true" mnemonicParsing="false" text="%send">
                      <VBox.margin>
