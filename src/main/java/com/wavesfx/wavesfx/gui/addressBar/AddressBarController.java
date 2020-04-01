@@ -6,6 +6,7 @@ import com.wavesfx.wavesfx.gui.MasterController;
 import com.wavesfx.wavesfx.logic.Profile;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import javafx.event.ActionEvent;
@@ -37,7 +38,7 @@ public class AddressBarController extends MasterController {
         addressComboBox.setConverter(new PrivateKeyAccountConverterProfile());
 
         rxBus.getProfile()
-                .subscribeOn(Schedulers.computation())
+                .observeOn(JavaFxScheduler.platform())
                 .subscribe(this::initializeAddresses);
 
         JavaFxObservable.valuesOf(addressComboBox.valueProperty())
@@ -64,26 +65,14 @@ public class AddressBarController extends MasterController {
     }
 
     private void initializeAddresses(final Profile profile) {
-        if (addressComboBox.getItems().isEmpty()) {
-            addressComboBox.getItems().setAll(profile.loadPrivateKeyAccounts());
-            addressComboBox.getSelectionModel().select(profile.getLastNonce());
-        } else {
-            addAddressToList();
-        }
+        addressComboBox.getItems().setAll(profile.loadPrivateKeyAccounts());
+        addressComboBox.getSelectionModel().select(profile.getLastNonce());
 
         if (profile.isPrivateKeyAccount()){
             addressComboBox.setDisable(true);
             addAddressButton.setDisable(true);
         }
 
-    }
-
-    private void addAddressToList() {
-        final var profile = profileSubject.getValue();
-        if (!profile.isPrivateKeyAccount()) {
-            addressComboBox.getItems()
-                    .add(profile.loadPrivateKeyAccounts().get(profile.loadPrivateKeyAccounts().size() - 1));
-        }
     }
 
     private void selectAddress(PrivateKeyAccount privateKeyAccount) {
