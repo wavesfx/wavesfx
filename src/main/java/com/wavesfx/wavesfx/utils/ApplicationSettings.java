@@ -20,7 +20,7 @@ public class ApplicationSettings {
     public final static int MAX_MASS_TX_SIZE = 100;
     public final static int NET_REQUEST_DELAY = 100;
     public final static int REQUEST_DELAY = 5;
-    public final static int TX_LIST_REQUEST_DELAY = 30; // Do not set the value too low!
+    public final static int TX_LIST_REQUEST_DELAY = 15; // Do not set the value too low!
     public final static long TOKEN_MAX_AMOUNT = 9223372036854775807L;
     public final static String APPLICATION_NAME = "wallet";
     public final static String CUSTOM_NODE = "http://127.0.0.1:6863";
