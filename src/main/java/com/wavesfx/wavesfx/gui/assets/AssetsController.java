@@ -98,7 +98,12 @@ public class AssetsController extends MasterController {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableList());
 
-        rxBus.getAssetList().onNext(portfolio);
+        if (rxBus.getAssetList().getValue() != null){
+            if (!rxBus.getAssetList().getValue().equals(portfolio))
+                rxBus.getAssetList().onNext(portfolio);
+        } else {
+            rxBus.getAssetList().onNext(portfolio);
+        }
     }
 
     private Waves wavesBalance() {

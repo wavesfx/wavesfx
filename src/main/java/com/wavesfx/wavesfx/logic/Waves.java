@@ -2,6 +2,8 @@ package com.wavesfx.wavesfx.logic;
 
 import com.wavesplatform.wavesj.AssetDetails;
 
+import java.util.Objects;
+
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
 
@@ -73,4 +75,16 @@ public class Waves implements Transferable {
         return new AssetDetails(ASSET_ID, 0L, 0L, "", NAME, "", 8, false, 10000000000000000L, false, null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Waves)) return false;
+        Waves waves = (Waves) o;
+        return Objects.equals(getBalance(), waves.getBalance());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBalance());
+    }
 }

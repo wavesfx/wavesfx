@@ -2,6 +2,8 @@ package com.wavesfx.wavesfx.logic;
 
 import com.wavesplatform.wavesj.AssetBalance;
 
+import java.util.Objects;
+
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
 
 public class Asset implements Transferable {
@@ -76,5 +78,25 @@ public class Asset implements Transferable {
 
     public boolean isReissuable() {
         return reissuable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Asset)) return false;
+        Asset asset = (Asset) o;
+        return getDecimals() == asset.getDecimals() &&
+                isReissuable() == asset.isReissuable() &&
+                Objects.equals(getName(), asset.getName()) &&
+                Objects.equals(getAssetId(), asset.getAssetId()) &&
+                Objects.equals(getIssuer(), asset.getIssuer()) &&
+                Objects.equals(getBalance(), asset.getBalance()) &&
+                Objects.equals(getMinFee(), asset.getMinFee()) &&
+                Objects.equals(getSponsorBalance(), asset.getSponsorBalance());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getAssetId(), getIssuer(), getBalance(), getMinFee(), getSponsorBalance(), getDecimals(), isReissuable());
     }
 }
