@@ -403,10 +403,12 @@
     -fx-padding :0.15em 0.0;
 }
 
+ .scroll-bar:horizontal .increment-arrow,
+ .scroll-bar:horizontal .decrement-arrow,
  .scroll-bar:vertical .increment-arrow,
  .scroll-bar:vertical .decrement-arrow{
     -fx-shape : " ";
-    -fx-padding :0.0 0.30em;
+    -fx-padding :0.30em 0.30em;
 }
 
 .scroll-bar:horizontal .thumb,
