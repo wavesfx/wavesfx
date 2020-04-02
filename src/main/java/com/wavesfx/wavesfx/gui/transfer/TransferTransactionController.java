@@ -71,4 +71,9 @@ public class TransferTransactionController extends MasterController {
 
         return decimalAmount <= selectedAsset.get().balanceAsLong() && decimalAmount >= 1;
     }
+
+    boolean isValidAmount(final long amount) {
+        final var selectedAsset = Optional.ofNullable(assetComboBox.getSelectionModel().getSelectedItem());
+        return amount <= selectedAsset.get().balanceAsLong() && amount >= 1;
+    }
 }

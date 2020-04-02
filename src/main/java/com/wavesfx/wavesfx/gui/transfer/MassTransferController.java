@@ -14,7 +14,6 @@ import com.wavesplatform.wavesj.Transactions;
 import com.wavesplatform.wavesj.Transfer;
 import com.wavesplatform.wavesj.transactions.MassTransferTransaction;
 import io.reactivex.Observable;
-import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.schedulers.Schedulers;
@@ -23,16 +22,15 @@ import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toLong;
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
+import static com.wavesfx.wavesfx.logic.FormValidator.AMOUNT_PATTERN;
 import static com.wavesfx.wavesfx.logic.FormValidator.MASS_TX_PATTERN;
 
 public class MassTransferController extends TransferTransactionController  {
@@ -65,86 +63,84 @@ public class MassTransferController extends TransferTransactionController  {
         final var assetIsNotEmptyObservable = assetObservable
                 .map(transferable -> !assetComboBox.getSelectionModel().isEmpty());
 
-
         final var recipientsObservable = JavaFxObservable.valuesOf(recipientTextArea.textProperty());
 
-        final var recipientIsValidObservable = recipientsObservable
+        final var recipientsIsValid = Observable.combineLatest(recipientsObservable, assetObservable, (r, a) -> r)
                 .observeOn(Schedulers.computation())
                 .map(this::hasValidRecipients);
 
-        final var validMassTxFormObservable = recipientsObservable
-                .doOnNext(s -> disableSendButton())
+        final var isValidMessageObservable = JavaFxObservable.valuesOf(messageTextArea.textProperty())
                 .observeOn(Schedulers.io())
-                .filter(this::hasValidRecipients);
-
-        final var validMassTxFormBooleanObservable = recipientsObservable
-                .doOnNext(s -> disableSendButton())
-                .observeOn(Schedulers.io())
-                .map(this::hasValidRecipients);
-
-        final var transferListObservable = validMassTxFormObservable
-                .map(this::getRecipients)
-                .map(strings -> fetchListOfTransfers(assetComboBox.getSelectionModel().getSelectedItem(), strings));
-
-        final var messageIsValidObservable = JavaFxObservable.valuesOf(messageTextArea.textProperty())
                 .map(this::isValidMessage);
 
-        final var assetAndAmountIsValidObservable = ConnectableObservable.combineLatest(
-                JavaFxObservable.valuesOf(amountTextField.textProperty()),
-                JavaFxObservable.valuesOf(assetComboBox.valueProperty()),
-                privateKeyAccountSubject, (amount, asset, privateKeyAccount) -> isValidAmount(amount)).cache();
-
-        StyleHandler.setBorderDisposable(recipientIsValidObservable, recipientTextArea);
-        StyleHandler.setBorderDisposable(assetAndAmountIsValidObservable, amountTextField);
-        StyleHandler.setBorderDisposable(messageIsValidObservable, messageTextArea);
-        StyleHandler.setBorderDisposable(assetIsNotEmptyObservable, assetComboBox);
-
-        transferListObservable
+        final var transferListObservable = Observable.combineLatest(recipientsObservable, recipientsIsValid,
+                isValidMessageObservable, assetIsNotEmptyObservable, this::validatedForm)
                 .observeOn(JavaFxScheduler.platform())
-                .doOnNext(t -> setCalculateFeeText())
+                .doOnNext(b -> clearAmountAndFeeTextFields())
+                .switchMap(s -> Observable.just(s).delay(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS))
+                .filter(s -> !s.isEmpty())
+                .observeOn(JavaFxScheduler.platform())
+                .doOnNext(s -> feeTextField.setText(getMessages().getString("calculating_fee")))
                 .observeOn(Schedulers.computation())
-                .map(transfers -> toReadable(calculateTotalAmount(transfers), assetComboBox.getSelectionModel().getSelectedItem().getDecimals()))
+                .map(b -> fetchListOfTransfers(assetComboBox.getSelectionModel().getSelectedItem(), getRecipients(recipientTextArea.getText())));
+
+        final var totalAmountObservable = transferListObservable
+                .observeOn(Schedulers.computation())
+                .map(this::calculateTotalAmount).cache();
+
+        totalAmountObservable
+                .map(l -> toReadable(l, assetComboBox.getSelectionModel().getSelectedItem().getDecimals()))
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(amountTextField::setText);
 
-        final var transactionsWithFeeObservable =
-                transferListObservable
-                .observeOn(Schedulers.io())
-                .filter(transfers -> assetComboBox.getSelectionModel().getSelectedItem() != null)
-                .switchMap(s -> Observable.just(s).delay(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS))
+        final var isValidAmountObservable = totalAmountObservable
+                .map(this::isValidAmount).cache();
+
+        final var calculatedFeeObservable = transferListObservable
                 .map(this::calculateFees)
-                .doOnNext(rxBus.getMassTransferTransactions()::onNext);
+                .doOnNext(rxBus.getMassTransferTransactions()::onNext)
+                .map(this::getTotalFee);
 
-        final var hasSufficientFundsObservable = transactionsWithFeeObservable
-                .map(this::getTotalFee)
-                .map(this::isValidFee);
-
-        StyleHandler.setBorderDisposable(hasSufficientFundsObservable, feeTextField);
-
-        transactionsWithFeeObservable
-                .map(this::getTotalFee)
-                .map(fee -> toReadable(fee, mainToken.getDecimals()))
+        calculatedFeeObservable
+                .map(l -> toReadable(l, mainToken.getDecimals()))
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(feeTextField::setText);
 
-        Observable.combineLatest(validMassTxFormBooleanObservable, messageIsValidObservable, assetIsNotEmptyObservable,
-                hasSufficientFundsObservable, FormValidator::areValid)
+        final var isValidFeeObservable = calculatedFeeObservable
+                .map(this::isValidFee).cache();
+
+        StyleHandler.setBorderDisposable(assetIsNotEmptyObservable, assetComboBox);
+        StyleHandler.setBorderDisposable(recipientsIsValid, recipientTextArea);
+        StyleHandler.setBorderDisposable(isValidMessageObservable, messageTextArea);
+        StyleHandler.setBorderDisposable(isValidAmountObservable, amountTextField);
+        StyleHandler.setBorderDisposable(isValidFeeObservable, feeTextField);
+
+        final var amountIsNotEmptyObservable = JavaFxObservable.valuesOf(amountTextField.textProperty())
+                .map(s -> !s.isEmpty());
+
+        final var feeIsNotEmptyObservable = JavaFxObservable.valuesOf(feeTextField.textProperty())
+                .map(s -> !s.isEmpty() && FormValidator.isWellFormed(s, AMOUNT_PATTERN));
+
+        Observable.combineLatest(isValidAmountObservable, isValidFeeObservable, amountIsNotEmptyObservable,
+                feeIsNotEmptyObservable, FormValidator::areValid)
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(b -> sendButton.setDisable(!b));
 
         JavaFxObservable.actionEventsOf(sendButton)
                 .subscribe(ae -> sendTranscation());
-
     }
 
     private void updateComboBoxes(List<Transferable> assetList) {
         reinitializeComboBox(assetComboBox, assetList);
     }
 
-    private boolean hasValidRecipients(final String address) {
+    private boolean hasValidRecipients(final String recipients) {
+        if (recipients.isEmpty())
+            return false;
         final var selectedAsset = assetComboBox.getSelectionModel().getSelectedItem();
-        final String[] splitString = getRecipients(address);
-        if (isWellFormed(splitString) || selectedAsset == null) return false;
+        final String[] splitString = getRecipients(recipients);
+        if (isWellFormed(splitString) || selectedAsset == null)
+            return false;
 
         final var transferList = fetchListOfTransfers(selectedAsset, splitString);
         final var listOfInvalidAddresses = getListOfInvalidAddresses(transferList);
@@ -195,11 +191,16 @@ public class MassTransferController extends TransferTransactionController  {
     }
 
     private List<Transfer> fetchListOfTransfers(final Transferable selectedAsset, final String[] transfers) {
-        return Arrays.stream(transfers)
-                .parallel()
-                .map(string -> string.split(","))
-                .map(s -> new Transfer(s[0], toLong(s[1], selectedAsset.getDecimals())))
-                .collect(Collectors.toUnmodifiableList());
+        try {
+            return Arrays.stream(transfers)
+                    .parallel()
+                    .map(string -> string.split(","))
+                    .map(s -> new Transfer(s[0], toLong(s[1], selectedAsset.getDecimals())))
+                    .collect(Collectors.toUnmodifiableList());
+        } catch (ArithmeticException e) {
+            log.error("Arithmetic Conversion Error");
+            return Collections.emptyList();
+        }
     }
 
     private boolean isWellFormed(final String[] transfers) {
@@ -220,7 +221,8 @@ public class MassTransferController extends TransferTransactionController  {
     private MassTransferTransaction recalculateFee(MassTransferTransaction transaction) {
         final var privateKeyAccount = getPrivateKeyAccount();
         final var fee = getNodeService().calculateFee(transaction).orElse(ApplicationSettings.TOKEN_MAX_AMOUNT);
-        return Transactions.makeMassTransferTx(privateKeyAccount, transaction.getAssetId(), transaction.getTransfers(), fee,"");
+        return Transactions.makeMassTransferTx(privateKeyAccount, transaction.getAssetId(), transaction.getTransfers(),
+                fee, new String(transaction.getAttachment().getBytes()));
     }
 
     private long getTotalFee(List<MassTransferTransaction> transactionList) {
@@ -252,14 +254,15 @@ public class MassTransferController extends TransferTransactionController  {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private void setCalculateFeeText(){
-        feeTextField.setText(getMessages().getString("calculating_fee"));
-        sendButton.setDisable(true);
-    }
-
-    private void disableSendButton() {
+    private void clearAmountAndFeeTextFields() {
         amountTextField.clear();
         feeTextField.clear();
-        sendButton.setDisable(true);
+    }
+
+    private String validatedForm(String recipients, Boolean... booleans) {
+        if (Stream.of(booleans).allMatch(Boolean::booleanValue) && hasValidRecipients(recipients))
+            return  recipients;
+        else
+            return "";
     }
 }
