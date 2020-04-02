@@ -131,10 +131,12 @@ public class TransactionsController extends MasterController {
     }
 
     private void populateList(List<TransactionDetails> list) {
-        final var focusedItem = transactionsTableView.selectionModelProperty().get().getFocusedIndex();
-        transactionList.clear();
-        transactionList.setAll(list);
-        transactionsTableView.setPlaceholder(new Label());
-        transactionsTableView.selectionModelProperty().get().focus(focusedItem);
+        if (!list.equals(transactionList)) {
+            final var focusedItem = transactionsTableView.selectionModelProperty().get().getFocusedIndex();
+            transactionList.clear();
+            transactionList.setAll(list);
+            transactionsTableView.setPlaceholder(new Label());
+            transactionsTableView.selectionModelProperty().get().focus(focusedItem);
+        }
     }
 }

@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.*;
@@ -247,5 +248,25 @@ public class TransactionDetails {
         }
 
         return new TransactionSummary(message, "");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransactionDetails)) return false;
+        TransactionDetails that = (TransactionDetails) o;
+        return getDateTime().equals(that.getDateTime()) &&
+                Objects.equals(getTransaction(), that.getTransaction()) &&
+                Objects.equals(getAssetDetailsService(), that.getAssetDetailsService()) &&
+                Objects.equals(messages, that.messages) &&
+                Objects.equals(getAddress(), that.getAddress()) &&
+                Objects.equals(getTransactionId(), that.getTransactionId()) &&
+                Objects.equals(transactionType, that.transactionType) &&
+                Objects.equals(getTransactionSummary(), that.getTransactionSummary());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTransaction(), getAssetDetailsService(), messages, getAddress(), getDateTime(), getTransactionId(), transactionType, getTransactionSummary());
     }
 }

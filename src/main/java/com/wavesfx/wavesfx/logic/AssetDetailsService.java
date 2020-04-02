@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class AssetDetailsService {
     private static final Logger log = LogManager.getLogger();
@@ -43,5 +44,20 @@ public class AssetDetailsService {
 
     public AssetDetails getMainToken() {
         return mainToken;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AssetDetailsService)) return false;
+        AssetDetailsService that = (AssetDetailsService) o;
+        return Objects.equals(assetDetailsHashMap, that.assetDetailsHashMap) &&
+                Objects.equals(getMainToken(), that.getMainToken()) &&
+                Objects.equals(getNode(), that.getNode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(assetDetailsHashMap, getMainToken(), getNode());
     }
 }
