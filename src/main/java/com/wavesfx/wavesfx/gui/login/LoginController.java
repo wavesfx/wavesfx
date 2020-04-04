@@ -99,6 +99,7 @@ public class LoginController extends MasterController {
         Observable.merge(
                 JavaFxObservable.eventsOf(loginButton, ActionEvent.ACTION),
                 JavaFxObservable.eventsOf(passwordField, KeyEvent.KEY_PRESSED).filter(e -> e.getCode().equals(KeyCode.ENTER)))
+                .doOnNext(event -> disableControls(true))
                 .observeOn(Schedulers.io())
                 .map(event -> decryptAccount())
                 .observeOn(JavaFxScheduler.platform())
@@ -119,6 +120,11 @@ public class LoginController extends MasterController {
 
     private void reloadScene() {
         switchRootScene(FXMLView.LOGIN, new LoginController(rxBus));
+    }
+
+    private void disableControls(boolean setDisable) {
+        passwordField.setDisable(setDisable);
+        loginButton.setDisable(setDisable);
     }
 
     private void initializeLanguageComboBox() {
@@ -183,6 +189,7 @@ public class LoginController extends MasterController {
 
     private void logIntoWallet(boolean decrypted) {
 //        if (!tosIsAgreed()) return;
+        disableControls(false);
         if (decrypted) {
             switchRootScene(FXMLView.WALLET, new WalletViewController(rxBus, offlineModeRadioButton.isSelected()));
         } else {
