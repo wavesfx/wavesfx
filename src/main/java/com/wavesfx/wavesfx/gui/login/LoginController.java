@@ -38,7 +38,7 @@ import static com.wavesfx.wavesfx.utils.ApplicationSettings.*;
 
 public class LoginController extends MasterController {
     private static final Logger log = LogManager.getLogger();
-    
+
     private final ConfigService configService;
 
     @FXML private ComboBox<Profile> profileComboBox;
@@ -57,7 +57,7 @@ public class LoginController extends MasterController {
     }
 
     @FXML
-	public void initialize() {
+    public void initialize() {
         initializeLanguageComboBox();
         initializeProfileComboBox();
         initializeLanguageSwitcher();
@@ -99,7 +99,10 @@ public class LoginController extends MasterController {
         Observable.merge(
                 JavaFxObservable.eventsOf(loginButton, ActionEvent.ACTION),
                 JavaFxObservable.eventsOf(passwordField, KeyEvent.KEY_PRESSED).filter(e -> e.getCode().equals(KeyCode.ENTER)))
-                .subscribe(event -> logIntoWallet(), Throwable::printStackTrace);
+                .observeOn(Schedulers.io())
+                .map(event -> decryptAccount())
+                .observeOn(JavaFxScheduler.platform())
+                .subscribe(this::logIntoWallet, Throwable::printStackTrace);
     }
 
     private void initializeLanguageSwitcher() {
@@ -156,27 +159,36 @@ public class LoginController extends MasterController {
             rxBus.getNode().onNext(node);
             rxBus.getNodeService().onNext(new NodeService(node));
         } catch (URISyntaxException e) {
-           log.error("Node could not be created", e);
+            log.error("Node could not be created", e);
         }
     }
 
-    private void logIntoWallet() {
-//        if (!tosIsAgreed()) return;
+    private boolean decryptAccount() {
         final var password = passwordField.getText();
         final var selectedAccount = profileComboBox.getSelectionModel().getSelectedItem();
+
         try {
             final var decryptedAccount = selectedAccount.decrypt(password);
-             publishSelectedUserSettings();
-             rxBus.getProfile().onNext(decryptedAccount);
-             rxBus.getPrivateKeyAccount().onNext(decryptedAccount.loadPrivateKeyAccounts().get(0));
-             rxBus.getMainTokenDetails().onNext(MAIN_TOKEN);
-             configService.setLastUser(selectedAccount.getName());
-             switchRootScene(FXMLView.WALLET, new WalletViewController(rxBus, offlineModeRadioButton.isSelected()));
+            publishSelectedUserSettings();
+            rxBus.getProfile().onNext(decryptedAccount);
+            rxBus.getPrivateKeyAccount().onNext(decryptedAccount.loadPrivateKeyAccounts().get(0));
+            rxBus.getMainTokenDetails().onNext(MAIN_TOKEN);
+            configService.setLastUser(selectedAccount.getName());
+            return true;
         } catch (Exception e) {
+            log.error("Error logging into Wallet", e);
+            return false;
+        }
+    }
+
+    private void logIntoWallet(boolean decrypted) {
+//        if (!tosIsAgreed()) return;
+        if (decrypted) {
+            switchRootScene(FXMLView.WALLET, new WalletViewController(rxBus, offlineModeRadioButton.isSelected()));
+        } else {
             Observable.just(0).doOnNext(integer -> invalidPassphraseLabel.setVisible(true))
                     .delay(10, TimeUnit.SECONDS)
                     .subscribe(integer -> invalidPassphraseLabel.setVisible(false));
-            log.error("Error logging into Wallet", e);
         }
     }
 
