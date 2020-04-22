@@ -53,7 +53,7 @@ dependencies {
 }
 
 //applicationDefaultJvmArgs = ['--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls']
-applicationDefaultJvmArgs = ['-splash:./package/wavesfx_splash.png']
+applicationDefaultJvmArgs = ['-splash:./package/wavesfx_splash.png', '-XX:+ShowCodeDetailsInExceptionMessages']
 
 task createProperties(dependsOn: processResources) {
     doLast {
