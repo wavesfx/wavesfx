@@ -87,7 +87,8 @@ public class LeasingController extends MasterController {
 
         BehaviorSubject<Boolean> observableRecipientIsValid = BehaviorSubject.create();
 
-        JavaFxObservable.valuesOf(recipientTextField.textProperty())
+        Observable.combineLatest(JavaFxObservable.valuesOf(recipientTextField.textProperty()),
+                privateKeyAccountSubject, (fxObservable, pKeyAccount) -> fxObservable)
                 .doOnNext(s -> observableRecipientIsValid.onNext(false))
                 .throttleLast(INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.computation())

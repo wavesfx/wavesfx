@@ -82,6 +82,7 @@ public class DashboardController extends MasterController {
                 .observeOn(Schedulers.computation())
                 .throttleLast(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS)
                 .map(this::isValidAlias)
+                .retry()
                 .observeOn(JavaFxScheduler.platform())
                 .doOnNext(b -> StyleHandler.setBorder(b, aliasTextField))
                 .subscribe(aBoolean -> createAliasButton.setDisable(!aBoolean), Throwable::printStackTrace);

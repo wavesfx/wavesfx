@@ -164,6 +164,8 @@ public class SendController extends TransferTransactionController  {
 
     private boolean hasSufficientFunds(final long fee) {
         final var selectedAsset = assetComboBox.getSelectionModel().getSelectedItem();
+        if (selectedAsset == null)
+            return false;
         final var selectedAssetFee = feeAssetComboBox.getSelectionModel().getSelectedItem();
         final var selectedAssetBalance = selectedAsset.balanceAsLong();
 

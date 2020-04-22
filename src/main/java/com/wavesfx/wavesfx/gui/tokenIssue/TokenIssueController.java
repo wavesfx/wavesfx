@@ -78,7 +78,8 @@ public class TokenIssueController extends MasterController {
         final var formIsValidObservable = ConnectableObservable.combineLatest(assetNameIsValidObservable, descriptionIsValidObservable,
                 amountIsValidObservable, scriptIsValidObservable, FormValidator::areValid);
 
-        final var hasSufficientFundsObservable = formIsValidObservable.observeOn(Schedulers.io())
+        final var hasSufficientFundsObservable = Observable.combineLatest(
+                formIsValidObservable, privateKeyAccountSubject, (form, pkey) -> form)
                 .filter(b -> b)
                 .map(this::hasSufficientFunds)
                 .doOnError(Throwable::printStackTrace);
