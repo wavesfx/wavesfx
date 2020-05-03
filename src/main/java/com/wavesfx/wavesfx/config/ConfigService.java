@@ -4,7 +4,7 @@ import com.electronwill.nightconfig.core.Config;
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.wavesfx.wavesfx.logic.Profile;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -39,11 +39,11 @@ public class ConfigService {
         return new ConfigService(fileConfig);
     }
 
-    public Optional<ArrayList<Profile>> getProfiles() {
-        final Config accounts = fileConfig.get(ROOT);
-        return Optional.of(accounts.valueMap().entrySet().stream()
-                .map(m -> getProfile(accounts, m))
-                .collect(Collectors.toCollection(ArrayList::new)));
+    public Optional<List<Profile>> getProfiles() {
+        final Optional<Config> accounts = fileConfig.getOptional(ROOT);
+        return accounts.map(config -> config.valueMap().entrySet().stream()
+                .map(m -> getProfile(config, m))
+                .collect(Collectors.toUnmodifiableList()));
     }
 
     public Profile getProfile(final Config accounts, final Map.Entry<String, Object> m) {
