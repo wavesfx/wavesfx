@@ -96,13 +96,11 @@ public class WalletViewController extends MasterController {
         logoutButton.setOnAction(event -> logout());
 
         if (offlineModeEnabled){
-            signButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("active"), true);
             contentPane.setCenter(sign);
             Stream.of(dashboardButton, portfolioButton, sendButton, tokenIssueButton, transactionsButton, leasingButton)
                     .forEach(button-> button.setDisable(true));
             rxBus.getEmitter().onComplete();
         } else {
-            dashboardButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("active"), true);
             final var dashboard = loadParent(FXMLView.DASHBOARD, new DashboardController(rxBus));
             final var assets = loadParent(FXMLView.ASSETS, new AssetsController(rxBus));
             final var transfer = loadParent(FXMLView.TRANSFER, new TransferTabsController(rxBus));
@@ -150,20 +148,8 @@ public class WalletViewController extends MasterController {
         switchRootScene(FXMLView.LOGIN, new LoginController(rxBus));
     }
 
-    private void clearButtonStyles(Object source) {
-        final var pseudoClass = PseudoClass.getPseudoClass("active");
-        final var button = (Button) source;
-        Stream.of(topMenuVBox, bottomMenuVBox)
-                .flatMap(vBox -> vBox.getChildren().stream())
-                .filter(node -> node.getPseudoClassStates().contains(pseudoClass))
-                .forEach(node -> node.pseudoClassStateChanged(pseudoClass, false));
-
-        button.pseudoClassStateChanged(pseudoClass, true);
-    }
-
     private void switchPaneScene(ActionEvent actionEvent, Parent parent) {
         contentPane.setCenter(parent);
-        clearButtonStyles(actionEvent.getSource());
     }
 
     private Observable<Long> createAfkCounter(){
