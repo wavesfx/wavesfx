@@ -483,14 +483,6 @@
     -fx-fill: #1F5AF6;
 }
 
-.menu-button:focused .ikonli-font-icon  {
-    -fx-icon-color: #1F5AF6;
-}
-
-.menu-button:focused .text  {
-    -fx-fill: #1F5AF6;
-}
-
 .table-view{
    -fx-background-color: transparent;
    -fx-border-width: 0;
