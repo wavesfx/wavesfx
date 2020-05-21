@@ -60,11 +60,12 @@ public class TokenIssueController extends MasterController {
 
         final var amountIsValidObservable = ConnectableObservable.combineLatest(
                 JavaFxObservable.valuesOf(amountTextField.textProperty()).throttleLast(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS),
-                JavaFxObservable.valuesOf(decimalSlider.valueProperty()),
+                JavaFxObservable.valuesOf(decimalSlider.valueProperty()).observeOn(Schedulers.computation()),
                 this::isValidTokenAmount)
                 .onErrorReturn(throwable -> false);
 
         final var scriptIsValidObservable = JavaFxObservable.valuesOf(scriptTextField.textProperty())
+                .throttleLast(ApplicationSettings.INPUT_REQUEST_DELAY, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
                 .map(this::isValidScript);
 
@@ -179,8 +180,8 @@ public class TokenIssueController extends MasterController {
         final var privateKeyAccount = getPrivateKeyAccount();
         final var assetName = assetNameTextField.getText();
         final var description = descriptionTextField.getText();
-        final var amount = Long.valueOf(amountTextField.getText());
         final var decimals = (byte) decimalSlider.getValue();
+        final var amount = toLong(amountTextField.getText(), decimals);
         final var reissuable = reissuableComboBox.selectionModelProperty().get().getSelectedIndex() == 0;
         final var script = scriptTextField.getText().isEmpty() ? null : getCompiledScript(scriptTextField.getText()).orElse(null);
 
