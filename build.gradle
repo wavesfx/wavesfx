@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'org.beryx.jlink' version '2.17.3'
+    id 'org.beryx.jlink' version '2.19.0'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'maven'
 }
@@ -21,7 +21,7 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-mainClassName = 'wavesfx/com.wavesfx.wavesfx.Main'
+mainClassName = 'com.wavesfx.wavesfx.Main'
 
 javafx {
     version = "14"
@@ -75,6 +75,7 @@ jlink {
     launcher {
         name = 'WavesFX'
         jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:{{BIN_DIR}}//wavesfx_splash.png"]
+        noConsole = true
     }
     forceMerge('log4j-api')
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
