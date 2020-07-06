@@ -37,7 +37,8 @@ public class AddressBarController extends MasterController {
         clipboard = Clipboard.getSystemClipboard();
         addressComboBox.setConverter(new PrivateKeyAccountConverterProfile());
 
-        rxBus.getProfile()
+        profileSubject
+                .filter(profile -> !profile.loadPrivateKeyAccounts().equals(addressComboBox.getItems()))
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(this::initializeAddresses);
 
@@ -60,19 +61,22 @@ public class AddressBarController extends MasterController {
     private void addAddress() {
         final var configService = configServiceSubject.getValue();
         final var profile = profileSubject.getValue().addAddress();
-        rxBus.getProfile().onNext(profile);
         configService.updateProfile(profile);
+        profileSubject.onNext(profile);
     }
 
     private void initializeAddresses(final Profile profile) {
         addressComboBox.getItems().setAll(profile.loadPrivateKeyAccounts());
-        addressComboBox.getSelectionModel().select(profile.getLastNonce());
 
-        if (profile.isPrivateKeyAccount()){
+        if (profile.getLastNonce() <= addressComboBox.getItems().size())
+            addressComboBox.getSelectionModel().select(profile.getLastNonce());
+        else if (!addressComboBox.getItems().isEmpty())
+            addressComboBox.getSelectionModel().select(0);
+
+        if (profile.isPrivateKeyAccount()) {
             addressComboBox.setDisable(true);
             addAddressButton.setDisable(true);
         }
-
     }
 
     private void selectAddress(PrivateKeyAccount privateKeyAccount) {
@@ -82,5 +86,6 @@ public class AddressBarController extends MasterController {
         rxBus.getPrivateKeyAccount().onNext(privateKeyAccount);
         final var updatedProfile = profile.updateLastNonce(addressComboBox.getSelectionModel().getSelectedIndex());
         configService.updateProfile(updatedProfile);
+        profileSubject.onNext(updatedProfile);
     }
 }

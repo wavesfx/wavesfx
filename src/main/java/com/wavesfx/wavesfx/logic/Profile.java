@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -103,5 +104,24 @@ public final class Profile {
 
     public Profile decrypt(String password) throws Exception {
         return new Profile(name, Encrypter.decrypt(seed, password), node, isPrivateKeyAccount, nonce, lastNonce, networkId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Profile)) return false;
+        Profile profile = (Profile) o;
+        return getNonce() == profile.getNonce() &&
+                getLastNonce() == profile.getLastNonce() &&
+                getNetworkId() == profile.getNetworkId() &&
+                isPrivateKeyAccount() == profile.isPrivateKeyAccount() &&
+                Objects.equals(getName(), profile.getName()) &&
+                Objects.equals(getSeed(), profile.getSeed()) &&
+                Objects.equals(getNode(), profile.getNode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSeed(), getNode(), getNonce(), getLastNonce(), getNetworkId(), isPrivateKeyAccount());
     }
 }
