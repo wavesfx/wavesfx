@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.wavesfx'
-version '0.14.2'
+version '0.14.3'
 
 sourceCompatibility = 14
 targetCompatibility = 14
