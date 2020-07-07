@@ -2,7 +2,10 @@
 
 ![img](package/wavesfx_readme.png)
 
+
 WavesFX is an open-source [Waves](https://wavesplatform.com) wallet for Windows, macOS and Linux.
+
+[Telegram Chat](https://t.me/wavesfxwallet)
 
 Releases can be found on the [release](https://github.com/wavesfx/wavesfx/releases) list.
 
@@ -33,4 +36,4 @@ Package will be located in `build/jpackage`
 ./gradlew jpackage
 ```
 # Bug Reports
-Please use the issue tracker provided by GitHub to send bug reports or feature requests.
+Please use the issue tracker provided by GitHub to send bug reports or feature requests or join WavesFX on [Telegram](https://t.me/wavesfxwallet)
