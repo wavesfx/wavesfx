@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'org.beryx.jlink' version '2.19.0'
+    id 'org.beryx.runtime' version '1.9.1'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'maven'
 }
@@ -21,7 +21,7 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-mainClassName = 'com.wavesfx.wavesfx.Main'
+mainClassName = 'com.wavesfx.wavesfx.Launcher'
 
 javafx {
     version = "14"
@@ -53,7 +53,11 @@ dependencies {
 }
 
 //applicationDefaultJvmArgs = ['--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls']
-applicationDefaultJvmArgs = ['-splash:./package/wavesfx_splash.png', '-XX:+ShowCodeDetailsInExceptionMessages']
+applicationDefaultJvmArgs = [
+        '-splash:./package/wavesfx_splash.png',
+        '-Djdk.tls.client.protocols=TLSv1.2',
+        '-XX:+ShowCodeDetailsInExceptionMessages'
+]
 
 task createProperties(dependsOn: processResources) {
     doLast {
@@ -71,28 +75,21 @@ classes {
 
 ext.os = org.gradle.internal.os.OperatingSystem.current()
 
-jlink {
-    launcher {
-        name = 'WavesFX'
-        jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', "-splash:{{BIN_DIR}}//wavesfx_splash.png"]
-        noConsole = true
-    }
-    forceMerge('log4j-api')
+runtime {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    addExtraDependencies("javafx")
 
     jpackage {
         skipInstaller = false
         imageName = "WavesFX"
         installerName = 'WavesFX'
         appVersion = version
+        jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$APPDIR/wavesfx_splash.png']
         installerOptions = [
                 '--vendor', 'WavesFX',
                 '--license-file', 'LICENSE'
         ]
         if (os.windows) {
             imageOptions = ['--icon', './package/wavesfx_icon.ico']
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/bin/wavesfx_splash.png']
             installerType = "msi"
             installerOptions += ['--win-upgrade-uuid', 'd4a56a68-bdc2-4138-8572-84fc72c11fbc',
                                 '--win-dir-chooser',
@@ -101,11 +98,9 @@ jlink {
             ]
         } else if(os.macOsX) {
             imageOptions = ['--icon', './package/wavesfx_mac_icon.icns',]
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/runtime/Contents/Home/bin/wavesfx_splash.png']
             installerType = 'dmg'
         } else if (os.unix) {
             imageOptions = ['--icon', './package/wavesfx_linux_icon.png']
-            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2', '-splash:$ROOTDIR/lib/runtime/bin/wavesfx_splash.png']
             installerType = "deb"
             installerOptions += [
                     '--linux-shortcut'
@@ -114,13 +109,29 @@ jlink {
     }
 }
 
-def JLINK_DIR = "$buildDir"
-tasks.jlink.doLast {
+def buildDir = "$buildDir"
+tasks.runtime.doLast {
     copy {
         includeEmptyDirs = false
         from("package") {
             include "wavesfx_splash.png"
         }
-        into JLINK_DIR + "/image/bin"
+        into buildDir + "/image/bin/package"
+    }
+}
+
+tasks.jpackageImage.doLast {
+    copy {
+        includeEmptyDirs = false
+        from("package") {
+            include "wavesfx_splash.png"
+        }
+        if (os.windows) {
+            into buildDir + "/jpackage/WavesFX/app"
+        } else if (os.macOsX) {
+            into buildDir + "/jpackage/WavesFX.app/Contents/app"
+        } else if (os.unix) {
+            into buildDir + "/jpackage/WavesFX/lib/app"
+        }
     }
 }

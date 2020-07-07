@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import static com.wavesfx.wavesfx.utils.ApplicationSettings.RESOURCE_BUNDLE_FILEPATH;
 import static com.wavesfx.wavesfx.utils.ApplicationSettings.getAppPath;
 
-public class Main extends Application {
+public class WavesFX extends Application {
 
     private static final Logger log = LogManager.getLogger();
 
