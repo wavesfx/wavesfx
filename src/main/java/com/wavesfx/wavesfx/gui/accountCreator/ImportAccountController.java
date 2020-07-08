@@ -7,6 +7,9 @@ import com.wavesplatform.wavesj.Base58;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
 import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
+import io.reactivex.schedulers.Schedulers;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -26,17 +29,19 @@ public class ImportAccountController extends AccountCreatorController  {
     @FXML private RadioButton seedAccountRadioButton;
     @FXML private RadioButton pkeyAccountRadioButton;
     @FXML private TextArea seedTextArea;
-    @FXML private Label invalidPkeyLabel;
+    @FXML private Label warningLabel;
 
     public ImportAccountController(final RxBus rxBus, final AccountCreator accountCreator) {
         super(rxBus, accountCreator);
     }
 
     @FXML
-    	public void initialize() {
+    public void initialize() {
         Observable.merge(JavaFxObservable.valuesOf(seedTextArea.textProperty()),
                 JavaFxObservable.valuesOf(toggleGroup.selectedToggleProperty()))
-                .map(changedValue -> notValid(seedTextArea.getText()))
+                .observeOn(Schedulers.computation())
+                .map(changedValue -> notValidBackup(seedTextArea.getText()))
+                .observeOn(JavaFxScheduler.platform())
                 .subscribe(nextButton::setDisable, Throwable::printStackTrace);
 
         JavaFxObservable.valuesOf(pkeyAccountRadioButton.selectedProperty())
@@ -59,16 +64,24 @@ public class ImportAccountController extends AccountCreatorController  {
         switchRootScene(FXMLView.LOGIN_INFO, new LoginInfoController(rxBus, accountCreator));
     }
 
-    private boolean notValid(String s) {
-        if (!pkeyAccountRadioButton.isSelected())
-            invalidPkeyLabel.setVisible(false);
-        if (pkeyAccountRadioButton.isSelected() && isInvalidPrivateKey(s)) {
-            invalidPkeyLabel.setVisible(true);
+    private boolean notValidBackup(String s) {
+        final var pKeyButtonIsSelected = pkeyAccountRadioButton.isSelected();
+        final var encodedSeedButtonIsSelected = encodedSeedAccountRadioButton.isSelected();
+
+        if (pKeyButtonIsSelected && isInvalidPrivateKey(s)) {
+            setWarningLabelTranslated("invalid_pkey");
+            return true;
+        } else if (encodedSeedButtonIsSelected && isInvalidEncodedSeed(s)) {
+            setWarningLabelTranslated("invalid_encoded_seed");
             return true;
         } else if (s.isEmpty()) {
+            Platform.runLater(() -> warningLabel.setText(""));
             return true;
+        } else if (startsOrEndsWithSpace(s)) {
+            setWarningLabelTranslated("space_warning");
+            return false;
         } else {
-            invalidPkeyLabel.setVisible(false);
+            Platform.runLater(() -> warningLabel.setText(""));
             return false;
         }
     }
@@ -81,5 +94,23 @@ public class ImportAccountController extends AccountCreatorController  {
             log.error("privatekey account could not be created");
             return true;
         }
+    }
+
+    private boolean isInvalidEncodedSeed(String s) {
+        try {
+            Base58.decode(s);
+            return false;
+        } catch (Exception e) {
+            log.error("string could not be Base58-decoded");
+            return true;
+        }
+    }
+
+    private boolean startsOrEndsWithSpace(String s) {
+        return s.startsWith(" ") || s.endsWith(" ");
+    }
+
+    private void setWarningLabelTranslated(String messageProperty) {
+        Platform.runLater(() -> warningLabel.setText(getMessages().getString(messageProperty)));
     }
 }

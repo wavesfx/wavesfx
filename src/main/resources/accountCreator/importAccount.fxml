@@ -31,7 +31,7 @@
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin></TextArea>
-                          <Label fx:id="invalidPkeyLabel" prefHeight="17.0" prefWidth="376.0" styleClass="form-input-alert" text="%invalid_pkey" visible="false" />
+                  <Label fx:id="warningLabel" prefWidth="376.0" styleClass="form-input-alert" wrapText="true" />
                           <VBox>
                               <children>
                                   <RadioButton fx:id="seedAccountRadioButton" mnemonicParsing="false" selected="true" styleClass="form-toggle" text="%seed">
