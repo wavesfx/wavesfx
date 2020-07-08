@@ -68,6 +68,7 @@ public class TransactionsController extends MasterController {
                 .subscribe(this::populateList, Throwable::printStackTrace);
 
         JavaFxObservable.valuesOf(txFilterComboBox.valueProperty())
+                .observeOn(Schedulers.io())
                 .subscribe(this::filterList);
 
     }
