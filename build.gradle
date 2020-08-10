@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'org.beryx.runtime' version '1.9.1'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'maven'
 }
 
@@ -24,7 +24,7 @@ configurations.all {
 mainClassName = 'com.wavesfx.wavesfx.Launcher'
 
 javafx {
-    version = "14"
+    version = "14.0.2.1"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
 }
 
