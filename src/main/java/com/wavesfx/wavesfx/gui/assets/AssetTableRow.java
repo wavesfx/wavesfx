@@ -18,6 +18,8 @@ import io.reactivex.subjects.BehaviorSubject;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableRow;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +34,8 @@ public class AssetTableRow extends TableRow<Transferable> {
     private final BehaviorSubject<Node> nodeSubject;
     private final MenuItem assetInfoMenuItem;
     private final MenuItem burnTokenMenuItem;
-    private final MenuItem reissueToken;
+    private final MenuItem reissueTokenMenuItem;
+    private final MenuItem copyAssetIdMenuItem;
     private final ResourceBundle resourceBundle;
     private final RxBus rxBus;
     private final Stage stage;
@@ -44,7 +47,17 @@ public class AssetTableRow extends TableRow<Transferable> {
         nodeSubject = rxBus.getNode();
         assetInfoMenuItem = new MenuItem(resourceBundle.getString("asset_info"));
         burnTokenMenuItem = new MenuItem(resourceBundle.getString("burn_asset"));
-        reissueToken = new MenuItem(resourceBundle.getString("reissue_token"));
+        reissueTokenMenuItem = new MenuItem(resourceBundle.getString("reissue_token"));
+        copyAssetIdMenuItem = new MenuItem(resourceBundle.getString("copy_asset_id"));
+
+        copyAssetIdMenuItem.setOnAction(event -> Optional.ofNullable(this.getItem())
+                        .ifPresent(transferable -> {
+                            final var clipboard = Clipboard.getSystemClipboard();
+                            final var clipboardContent = new ClipboardContent();
+                            final var assetId = transferable.getAssetId();
+                            clipboardContent.putString(assetId);
+                            clipboard.setContent(clipboardContent);
+                        }));
 
         assetInfoMenuItem.setOnAction(event -> Optional.ofNullable(this.getItem())
                 .ifPresent(transferable -> Observable.just(transferable.getAssetId()).observeOn(Schedulers.io())
@@ -59,7 +72,7 @@ public class AssetTableRow extends TableRow<Transferable> {
                         .observeOn(JavaFxScheduler.platform())
                         .subscribe(transferable1 -> createDialog(FXMLView.BURN_TOKEN, new BurnController(rxBus)))));
 
-        reissueToken.setOnAction(event -> Optional.ofNullable(this.getTableView().getSelectionModel().getSelectedItem())
+        reissueTokenMenuItem.setOnAction(event -> Optional.ofNullable(this.getTableView().getSelectionModel().getSelectedItem())
                 .ifPresent(transferable -> Observable.just(transferable).observeOn(Schedulers.io())
                         .doOnNext(this::pushTxDataToBus)
                         .observeOn(JavaFxScheduler.platform())
@@ -78,9 +91,9 @@ public class AssetTableRow extends TableRow<Transferable> {
                 final var asset = (Asset) this.getItem();
                 final var privateKeyAccount = rxBus.getPrivateKeyAccount().getValue();
                 if (asset.isReissuable() && asset.getIssuer().equals(privateKeyAccount.getAddress())) {
-                    this.setContextMenu(new ContextMenu(assetInfoMenuItem, burnTokenMenuItem, reissueToken));
+                    this.setContextMenu(new ContextMenu(assetInfoMenuItem, copyAssetIdMenuItem, burnTokenMenuItem, reissueTokenMenuItem));
                 } else {
-                    this.setContextMenu(new ContextMenu(assetInfoMenuItem, burnTokenMenuItem));
+                    this.setContextMenu(new ContextMenu(assetInfoMenuItem, copyAssetIdMenuItem, burnTokenMenuItem));
                 }
             }
         }
