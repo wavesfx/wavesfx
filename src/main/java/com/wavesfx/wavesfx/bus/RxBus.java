@@ -30,6 +30,7 @@ public class RxBus {
     private final BehaviorSubject<List<BurnTransaction>> burnTransactionsBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<List<MassTransferTransaction>> massTransferTransactionsBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<Long> emitterBehaviorSubject = createBehaviorSubject();
+    private final BehaviorSubject<Long> txListEmitterBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<Node> nodeBehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<NodeService> nodeService2BehaviorSubject = createBehaviorSubject();
     private final BehaviorSubject<PrivateKeyAccount> privateKeyAccountBehaviorSubject = createBehaviorSubject();
@@ -101,6 +102,10 @@ public class RxBus {
         return emitterBehaviorSubject;
     }
 
+    public BehaviorSubject<Long> getTxListEmitter() {
+        return txListEmitterBehaviorSubject;
+    }
+
     public BehaviorSubject<BalanceDetails> getBalanceDetails() {
         return balanceDetailsBehaviorSubject;
     }
@@ -113,7 +118,9 @@ public class RxBus {
         return burnTransactionsBehaviorSubject;
     }
 
-    public BehaviorSubject<List<MassTransferTransaction>> getMassTransferTransactions() {return massTransferTransactionsBehaviorSubject;}
+    public BehaviorSubject<List<MassTransferTransaction>> getMassTransferTransactions() {
+        return massTransferTransactionsBehaviorSubject;
+    }
 
     public BehaviorSubject<HashMap<String, AssetDetails>> getAssetDetailsHashMap() {
         return assetDetailsHashMapBehaviorSubject;
@@ -127,7 +134,7 @@ public class RxBus {
         return transactionDetailsBehaviorSubject;
     }
 
-    public BehaviorSubject<Stage> getStageBehaviorSubject(){
+    public BehaviorSubject<Stage> getStageBehaviorSubject() {
         return stageBehaviorSubject;
     }
 

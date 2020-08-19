@@ -5,12 +5,13 @@ import com.wavesfx.wavesfx.gui.MasterController;
 import com.wavesfx.wavesfx.logic.TransactionDetails;
 import com.wavesfx.wavesfx.logic.TransactionSummary;
 import com.wavesfx.wavesfx.logic.TxFilter;
-import com.wavesfx.wavesfx.utils.ApplicationSettings;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.BehaviorSubject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -34,7 +35,7 @@ public class TransactionsController extends MasterController {
     private static final Logger log = LogManager.getLogger();
 
     private ObservableList<TransactionDetails> transactionList;
-    private Observable<Long> emitter;
+    private BehaviorSubject<Long> txListEmitter;
     private SortedList<TransactionDetails> sortedList;
     private Clipboard clipboard;
 
@@ -46,7 +47,7 @@ public class TransactionsController extends MasterController {
 
     public TransactionsController(final RxBus rxBus) {
         super(rxBus);
-        emitter = ConnectableObservable.interval(ApplicationSettings.TX_LIST_REQUEST_DELAY, TimeUnit.SECONDS);
+        txListEmitter = rxBus.getTxListEmitter();
     }
 
     @FXML
@@ -62,7 +63,8 @@ public class TransactionsController extends MasterController {
         final var txAmountObservable = JavaFxObservable.valuesOf(txAmountComboBox.getSelectionModel().selectedItemProperty())
                 .doOnNext(integer -> clearTableViewForReload());
 
-        ConnectableObservable.merge(privateKeyAccountSubject, emitter, txAmountObservable)
+        ConnectableObservable.merge(privateKeyAccountSubject, txListEmitter, txAmountObservable)
+                .observeOn(Schedulers.io())
                 .switchMap(o -> loadTransactionHistoryObservable())
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe(this::populateList, Throwable::printStackTrace);
@@ -74,10 +76,9 @@ public class TransactionsController extends MasterController {
     }
 
     private Observable<List<TransactionDetails>> loadTransactionHistoryObservable() {
-        return Observable.just(0)
+        return Single.just(loadTransactionHistory())
                 .delay(1, TimeUnit.SECONDS)
-                .observeOn(Schedulers.io())
-                .map(o1 -> loadTransactionHistory());
+                .toObservable();
     }
 
     private void initializeTxFilter() {

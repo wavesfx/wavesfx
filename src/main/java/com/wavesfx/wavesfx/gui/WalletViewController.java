@@ -74,6 +74,9 @@ public class WalletViewController extends MasterController {
                 .interval(REQUEST_DELAY, TimeUnit.SECONDS, Schedulers.io())
                 .takeWhile(aLong -> !offlineModeEnabled)
                 .subscribe(rxBus.getEmitter()::onNext);
+        ConnectableObservable
+                .interval(ApplicationSettings.TX_LIST_REQUEST_DELAY, TimeUnit.SECONDS, Schedulers.io())
+                .subscribe(rxBus.getTxListEmitter()::onNext);
         afkCounterSubject = BehaviorSubject.create();
         final var hashMap = new HashMap<String, AssetDetails>();
         hashMap.put(mainToken.getAssetId(), mainToken);
@@ -146,6 +149,7 @@ public class WalletViewController extends MasterController {
         rxBus2.getResourceBundle().onNext(messages);
         rxBus2.getConfigService().onNext(rxBus.getConfigService().getValue());
         emitter.dispose();
+        rxBus.getTxListEmitter().onComplete();
         this.rxBus = rxBus2;
         switchRootScene(FXMLView.LOGIN, new LoginController(rxBus));
     }
