@@ -146,7 +146,7 @@ public class TransactionDetails {
         final var assetDetails = fetchAssetDetails(massTransferTransaction.getAssetId());
         final var assetName = assetDetails.getName();
         final var senderAddress = massTransferTransaction.getSenderPublicKey().getAddress();
-        final var transfer = massTransferTransaction.getTransfers().stream().parallel();
+        final var transfer = massTransferTransaction.getTransfers().stream();
 
         if (senderAddress.equals(address)) {
             final var totalAmount = transfer.mapToLong(Transfer::getAmount).sum();

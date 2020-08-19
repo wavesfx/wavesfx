@@ -154,7 +154,7 @@ public class SendController extends TransferTransactionController  {
         reinitializeComboBox(assetComboBox, assetList);
         final Predicate<Transferable> filter = t ->
                 t.getMinFee() != null && t.balanceAsLong() >= t.minFeeAsLong() && t.sponsorBalanceAsLong() >= Waves.FEE;
-        final var feeList = assetList.stream().parallel()
+        final var feeList = assetList.stream()
                 .filter(filter)
                 .collect(Collectors.toUnmodifiableList());
 

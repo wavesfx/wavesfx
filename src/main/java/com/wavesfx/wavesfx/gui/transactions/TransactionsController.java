@@ -106,7 +106,7 @@ public class TransactionsController extends MasterController {
         final var txAmount = txAmountComboBox.getValue();
         final var txs = getNodeService().fetchAddressTransactions(address, txAmount).orElse(new ArrayList<>());
 
-        return txs.stream().parallel()
+        return txs.stream()
                 .map(tx -> new TransactionDetails(assetDetailsService, tx, address, getMessages()))
                 .sorted(Comparator.comparingLong(TransactionDetails::getEpochDateTime).reversed())
                 .collect(Collectors.toUnmodifiableList());

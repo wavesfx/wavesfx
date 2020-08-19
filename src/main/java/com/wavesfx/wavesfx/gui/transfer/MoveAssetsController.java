@@ -175,7 +175,7 @@ public class MoveAssetsController extends MasterController {
     }
 
     private List<TransferTransaction> updateTransactionFees (List<TransferTransaction> transferTransactions){
-        return transferTransactions.stream().parallel()
+        return transferTransactions.stream()
                 .map(tx -> updateTransactionFee(tx, getNodeService().calculateFee(tx).orElse(tx.getFee())))
                 .collect(Collectors.toUnmodifiableList());
     }
@@ -187,7 +187,7 @@ public class MoveAssetsController extends MasterController {
     }
 
     private Optional<Long> getAccountBalance(final List<Transferable> transferableList){
-        return transferableList.stream().parallel()
+        return transferableList.stream()
                 .findFirst()
                 .filter(tr -> tr.getAssetId().equals(Waves.ASSET_ID) || tr.getAssetId() == null)
                 .map(Transferable::balanceAsLong);
