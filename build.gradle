@@ -24,7 +24,7 @@ configurations.all {
 mainClassName = 'com.wavesfx.wavesfx.Launcher'
 
 javafx {
-    version = "14.0.2.1"
+    version = "15"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
 }
 
