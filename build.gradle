@@ -6,10 +6,10 @@ plugins {
 }
 
 group 'com.wavesfx'
-version '0.15.0'
+version '1.15.0'
 
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 15
+targetCompatibility = 15
 
 repositories {
     mavenCentral()
@@ -55,8 +55,7 @@ dependencies {
 //applicationDefaultJvmArgs = ['--add-exports=javafx.base/com.sun.javafx.event=org.controlsfx.controls']
 applicationDefaultJvmArgs = [
         '-splash:./package/wavesfx_splash.png',
-        '-Djdk.tls.client.protocols=TLSv1.2',
-        '-XX:+ShowCodeDetailsInExceptionMessages'
+        '-Djdk.tls.client.protocols=TLSv1.2'
 ]
 
 task createProperties(dependsOn: processResources) {
