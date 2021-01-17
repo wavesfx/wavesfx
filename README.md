@@ -5,7 +5,7 @@
 
 WavesFX is an open-source [Waves](https://wavesplatform.com) wallet for Windows, macOS and Linux.
 
-[Telegram Chat](https://t.me/wavesfxwallet)
+[Telegram Chat](https://t.me/wavesfxchat)
 
 Releases can be found on the [release](https://github.com/wavesfx/wavesfx/releases) list.
 
