@@ -36,4 +36,4 @@ Package will be located in `build/jpackage`
 ./gradlew jpackage
 ```
 # Bug Reports
-Please use the issue tracker provided by GitHub to send bug reports or feature requests or join WavesFX on [Telegram](https://t.me/wavesfxwallet)
+Please use the issue tracker provided by GitHub to send bug reports or feature requests or join WavesFX on [Telegram](https://t.me/wavesfxchat)
