@@ -88,6 +88,7 @@ runtime {
                 '--license-file', 'LICENSE'
         ]
         if (os.windows) {
+            jvmArgs = ['-Djdk.tls.client.protocols=TLSv1.2']
             imageOptions = ['--icon', './package/wavesfx_icon.ico']
             installerType = "msi"
             installerOptions += ['--win-upgrade-uuid', 'd4a56a68-bdc2-4138-8572-84fc72c11fbc',
