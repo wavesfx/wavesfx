@@ -75,7 +75,7 @@ classes {
 ext.os = org.gradle.internal.os.OperatingSystem.current()
 
 runtime {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    options = ['--strip-debug', '--compress', '1', '--no-header-files', '--no-man-pages']
 
     jpackage {
         skipInstaller = false
