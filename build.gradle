@@ -2,7 +2,6 @@ plugins {
     id 'application'
     id 'org.beryx.runtime' version '1.9.1'
     id 'org.openjfx.javafxplugin' version '0.0.9'
-    id 'maven'
 }
 
 group 'com.wavesfx'
@@ -46,7 +45,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjavafx:2.2.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation 'com.github.wavesfx:WavesJ:master-SNAPSHOT'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.0'
 
