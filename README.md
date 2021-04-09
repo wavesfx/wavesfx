@@ -14,9 +14,9 @@ Releases can be found on the [release](https://github.com/wavesfx/wavesfx/releas
 
 ## 1. Prerequisites
 
-### Install Java Development Kit (JDK) 14
+### Install Java Development Kit (JDK) 16
 
-[OpenJDK](https://jdk.java.net/14/) and [AdoptOpenJDK](https://adoptopenjdk.net/archive.html) are excellent choices. 
+[OpenJDK](https://jdk.java.net/16/) and [AdoptOpenJDK](https://adoptopenjdk.net/archive.html) are excellent choices. 
 
 ## 2. Obtain Source Code
 
