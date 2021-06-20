@@ -89,7 +89,9 @@ public class AssetsController extends MasterController {
 
     private void loadAndUpdatePortfolio(List<AssetBalance> assetBalanceList) {
         final var assets = assetBalanceList.stream()
-                .map(assetBalance1 -> (Transferable) new Asset(assetBalance1))
+                .map(this::getTransferable)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .sorted(Comparator.comparing(Transferable::getName, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toUnmodifiableList());
 
@@ -103,6 +105,14 @@ public class AssetsController extends MasterController {
                 rxBus.getAssetList().onNext(portfolio);
         } else {
             rxBus.getAssetList().onNext(portfolio);
+        }
+    }
+
+    private Optional<Transferable> getTransferable(AssetBalance assetBalance1) {
+        try {
+            return Optional.of((Transferable) new Asset(assetBalance1, getNodeService()));
+        } catch (IOException e) {
+            return Optional.empty();
         }
     }
 

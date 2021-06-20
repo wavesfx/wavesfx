@@ -2,6 +2,7 @@ package com.wavesfx.wavesfx.logic;
 
 import com.wavesplatform.wavesj.AssetBalance;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.wavesfx.wavesfx.logic.AssetNumeralFormatter.toReadable;
@@ -16,14 +17,21 @@ public class Asset implements Transferable {
     private final int decimals;
     private final boolean reissuable;
 
-    public Asset(final AssetBalance assetBalance) {
-        this.decimals = assetBalance.getIssueTransactionV2().getDecimals();
-        this.name = assetBalance.getIssueTransactionV2().getName();
+    public Asset(final AssetBalance assetBalance, final NodeService nodeService) throws IOException {
+        if (assetBalance.getIssueTransactionV2() != null) {
+            this.decimals = assetBalance.getIssueTransactionV2().getDecimals();
+            this.name = assetBalance.getIssueTransactionV2().getName();
+            this.issuer = assetBalance.getIssueTransactionV2().getSenderPublicKey().getAddress();
+        } else {
+            var assetDetails = nodeService.getNode().getAssetDetails(assetBalance.getAssetId());
+            this.decimals = assetDetails.getDecimals();
+            this.name = assetDetails.getName();
+            this.issuer = assetDetails.getIssuer();
+        }
         this.balance = assetBalance.getBalance();
         this.assetId = assetBalance.getAssetId();
         this.minFee = assetBalance.getMinSponsoredAssetFee();
         this.sponsorBalance = assetBalance.getSponsorBalance();
-        this.issuer = assetBalance.getIssueTransactionV2().getSenderPublicKey().getAddress();
         this.reissuable = assetBalance.getReissuable();
     }
 
