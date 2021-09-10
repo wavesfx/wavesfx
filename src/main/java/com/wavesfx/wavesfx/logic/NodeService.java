@@ -129,7 +129,7 @@ public class NodeService {
         }
     }
 
-    public Optional<List<Transaction>> fetchActiveLeases(String address){
+    public Optional<List<LeaseInfo>> fetchActiveLeases(String address){
         try {
             return Optional.of(node.getActiveLeases(address));
         } catch (IOException e) {
@@ -143,6 +143,15 @@ public class NodeService {
             return Optional.of(node.send(transaction));
         } catch (IOException e) {
             log.error("Error sending transaction", e);
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Transaction> getTransaction(String transactionId) {
+        try {
+            return Optional.of(node.getTransaction(transactionId));
+        } catch (IOException e) {
+            log.error("Error fetching transaction");
             return Optional.empty();
         }
     }

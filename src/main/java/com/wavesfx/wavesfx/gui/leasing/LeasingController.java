@@ -7,8 +7,7 @@ import com.wavesfx.wavesfx.gui.dialog.ConfirmTransferController;
 import com.wavesfx.wavesfx.gui.style.StyleHandler;
 import com.wavesfx.wavesfx.gui.transactions.TransactionsTableCell;
 import com.wavesfx.wavesfx.logic.*;
-import com.wavesplatform.wavesj.BalanceDetails;
-import com.wavesplatform.wavesj.Transactions;
+import com.wavesplatform.wavesj.*;
 import com.wavesplatform.wavesj.transactions.LeaseTransaction;
 import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
@@ -156,6 +155,9 @@ public class LeasingController extends MasterController {
         final var assetDetailsService = rxBus.getAssetDetailsService().getValue();
         final var activeLeases = getNodeService().fetchActiveLeases(address).orElse(new ArrayList<>());
         return activeLeases.stream()
+                .map(leaseInfo -> getNodeService().getTransaction(leaseInfo.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .map(tx -> new TransactionDetails(assetDetailsService, tx, address, getMessages()))
                 .sorted(Comparator.comparingLong(TransactionDetails::getEpochDateTime).reversed())
                 .collect(Collectors.toUnmodifiableList());
