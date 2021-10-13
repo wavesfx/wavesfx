@@ -1,6 +1,7 @@
 package com.wavesfx.wavesfx.logic;
 
 import com.wavesplatform.wavesj.AssetBalance;
+import com.wavesplatform.wavesj.AssetDetails;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,6 +17,18 @@ public class Asset implements Transferable {
     private final Long sponsorBalance;
     private final int decimals;
     private final boolean reissuable;
+
+    public Asset(String name, String assetId, String issuer, Long balance, Long minFee, Long sponsorBalance,
+                 int decimals, boolean reissuable) {
+        this.name = name;
+        this.assetId = assetId;
+        this.issuer = issuer;
+        this.balance = balance;
+        this.minFee = minFee;
+        this.sponsorBalance = sponsorBalance;
+        this.decimals = decimals;
+        this.reissuable = reissuable;
+    }
 
     public Asset(final AssetBalance assetBalance, final NodeService nodeService) throws IOException {
         if (assetBalance.getIssueTransactionV2() != null) {
@@ -33,6 +46,19 @@ public class Asset implements Transferable {
         this.minFee = assetBalance.getMinSponsoredAssetFee();
         this.sponsorBalance = assetBalance.getSponsorBalance();
         this.reissuable = assetBalance.getReissuable();
+    }
+
+    public static Transferable fromNft(AssetDetails assetDetails) {
+        return new Asset(
+                assetDetails.getName(),
+                assetDetails.getAssetId(),
+                assetDetails.getIssuer(),
+                1L,
+                assetDetails.getMinSponsoredAssetFee(),
+                0L,
+                assetDetails.getDecimals(),
+                false
+        );
     }
 
     @Override

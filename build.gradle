@@ -5,10 +5,10 @@ plugins {
 }
 
 group 'com.wavesfx'
-version '1.15.6'
+version '1.15.7'
 
-sourceCompatibility = 14
-targetCompatibility = 14
+sourceCompatibility = 16
+targetCompatibility = 16
 
 repositories {
     mavenCentral()
@@ -44,7 +44,7 @@ dependencies {
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'io.reactivex.rxjava2:rxjavafx:2.2.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
-    implementation 'com.github.wavesfx:WavesJ:545c3ff1b2'
+    implementation 'com.github.wavesfx:WavesJ:16ee2ea0fe'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.0'

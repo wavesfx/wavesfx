@@ -93,6 +93,15 @@ public class NodeService {
         }
     }
 
+    public Optional<List<AssetDetails>> fetchNFTs(String address, int limit) {
+        try {
+            return Optional.of(node.getNFTs(address, limit));
+        } catch (IOException e) {
+            log.error("Error fetching asset NFTs", e);
+            return Optional.empty();
+        }
+    }
+
     public Optional<List<AssetBalance>> fetchAssetBalance(String address){
         try {
             return Optional.of(node.getAssetsBalance(address));

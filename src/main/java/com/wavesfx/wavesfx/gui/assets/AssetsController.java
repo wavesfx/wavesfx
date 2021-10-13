@@ -6,6 +6,7 @@ import com.wavesfx.wavesfx.logic.Asset;
 import com.wavesfx.wavesfx.logic.Transferable;
 import com.wavesfx.wavesfx.logic.Waves;
 import com.wavesplatform.wavesj.AssetBalance;
+import com.wavesplatform.wavesj.AssetDetails;
 import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler;
@@ -26,7 +27,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AssetsController extends MasterController {
@@ -37,6 +37,8 @@ public class AssetsController extends MasterController {
     private ObservableList<Transferable> assetList;
     private SortedList<Transferable> sortedList;
     private final BehaviorSubject<Long> emitterSubject;
+
+    private record AssetTuple(List<AssetBalance> assetBalanceList, List<AssetDetails> nftList) { }
 
     @FXML private TableView<Transferable> assetsTableView;
     @FXML private TableColumn<Asset, Asset> assetNameTableColumn;
@@ -58,7 +60,7 @@ public class AssetsController extends MasterController {
 
         ConnectableObservable.merge(privateKeyAccountSubject, emitterSubject)
                 .observeOn(Schedulers.computation())
-                .map(emission -> getNodeService().fetchAssetBalance(getPrivateKeyAccount().getAddress()))
+                .map(emission -> fetchAssetsAndNFTs())
                 .filter(Optional::isPresent).map(Optional::get)
                 .subscribe(this::loadAndUpdatePortfolio, Throwable::printStackTrace);
 
@@ -87,18 +89,19 @@ public class AssetsController extends MasterController {
         assetsTableView.setRowFactory(p -> new AssetTableRow(rxBus, getStage()));
     }
 
-    private void loadAndUpdatePortfolio(List<AssetBalance> assetBalanceList) {
-        final var assets = assetBalanceList.stream()
+    private void loadAndUpdatePortfolio(AssetTuple assetTuple) {
+        final var assets = assetTuple.assetBalanceList.stream()
                 .map(this::getTransferable)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .sorted(Comparator.comparing(Transferable::getName, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
+        final var nfts = assetTuple.nftList.stream().map(Asset::fromNft).toList();
         final var wavesBalance = (Transferable) wavesBalance();
-        final var portfolio = Stream.of(List.of(wavesBalance), assets)
+        final var portfolio = Stream.of(List.of(wavesBalance), assets, nfts)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         if (rxBus.getAssetList().getValue() != null){
             if (!rxBus.getAssetList().getValue().equals(portfolio))
@@ -114,6 +117,15 @@ public class AssetsController extends MasterController {
         } catch (IOException e) {
             return Optional.empty();
         }
+    }
+
+    private Optional<AssetTuple> fetchAssetsAndNFTs() {
+        final var address = getPrivateKeyAccount().getAddress();
+        return getNodeService().fetchAssetBalance(address)
+                .map(assetBalances -> new AssetTuple(
+                        assetBalances,
+                        getNodeService().fetchNFTs(address, 1000).orElse(List.of())
+                ));
     }
 
     private Waves wavesBalance() {
